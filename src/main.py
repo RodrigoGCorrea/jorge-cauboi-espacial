@@ -1,10 +1,12 @@
 from PPlay.window import Window
+import globals
 
-WIDTH = 800
-HEIGHT = 600
+def main():
+    window = Window(globals.WIDTH, globals.HEIGHT)
+    window.set_title("JSC")
 
-window = Window(WIDTH, HEIGHT)
-window.set_title("JSC")
+    while globals.GAME_STARTED:
+        window.update()
 
-while True:
-    window.update()
+if __name__ == "__main__":
+    main()

@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\Rodrigo Correa\\.virtualenvs\\jorge-cauboi-espacial-E6X6wgSY\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\Geraldo Fada\\.virtualenvs\\jorge-cauboi-espacial--g6zJRHf\\Scripts\\python.exe",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
