@@ -1,4 +1,4 @@
-from PPlay.sprite import Sprite
+from library.PPlay.sprite import Sprite
 
 class LevelControl(object):
     def __init__(self, window, level_mtx):
@@ -6,7 +6,7 @@ class LevelControl(object):
         self.window = window
         self.__draw()
 
-    def run(self):
+    def update(self):
         self.__draw()
     
     def __draw(self):
