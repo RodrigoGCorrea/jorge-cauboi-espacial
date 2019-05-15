@@ -13,7 +13,7 @@ class LevelControl(object):
         for col in range(len(self.level_mtx)):
             for lin in range(len(self.level_mtx[0])):
                 if self.level_mtx[col][lin] == 1:
-                    tile = Sprite("src\\assets\\floor.png")
+                    tile = Sprite("./src/assets/floor.png")
                     tile.set_position(lin * tile.width, col * tile.height)
                     tile.draw()
        
