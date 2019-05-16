@@ -22,6 +22,7 @@ class Entity(object):
 		self.moving = 1
 		self.jumping = False
 		self.y_vel = 0
+		self.y0 = self.animation.y
 		self.time = 0
 
 		self.idle = True
@@ -35,11 +36,15 @@ class Entity(object):
 			self.animation.x += x_velocity
 
 	def jump(self, delta_time):
-		if self.jumping:
-			self.animation.y += self.y_vel * self.time + (globals.GRAVITY * self.time**2)/2
-			self.time += globals.FALL_TIME * delta_time
-		else:
+		if self.jumping == False:
 			self.y_vel = globals.Y_VELOCITY_PLAYER
+			self.y0 = self.animation.y
+			self.time = 0
+		else:
+			self.animation.y = self.y0 - self.y_vel * self.time - (globals.GRAVITY * (self.time)**2)/2
+			self.time += globals.FALL_TIME * delta_time
+			print(self.animation.y, - self.y_vel * self.time - (globals.GRAVITY * (self.time)**2)/2, self.y0)
+
 	
 	def attack(self):
 		pass

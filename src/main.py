@@ -45,13 +45,12 @@ def main():
 				jorge.animation.set_position(jorge.animation.x - 1, jorge.animation.y)
 				jorge.collided_right = False
 				jorge.moving = 1
-		else:
+		else: 
 			jorge.change_animation("./src/assets/jorge_idle.png", 8)
 
 		if keyboard.key_pressed("space") or jorge.jumping:
 			jorge.jump(window.delta_time())
 			jorge.jumping = True
-		
 		#collision
 		if not (jorge.collided_left and jorge.collided_right):	
 			for obstacle in level.obstacles:
@@ -63,8 +62,18 @@ def main():
 					jorge.collided_right = True
 					jorge.moving = 0
 					break
-		
-		
+
+		if jorge.jumping:
+			for floor in level.floor:
+				if jorge.animation.collided(floor):
+					jorge.jumping = False
+					break
+			for obstacle in level.obstacles:
+				if jorge.animation.collided(obstacle):
+					jorge.jumping = False
+					break
+			jorge.animation.set_position(jorge.animation.x, jorge.animation.y - 3)
+	
 		background.draw()
 		level.update()
 		jorge.update()
