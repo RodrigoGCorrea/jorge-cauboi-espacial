@@ -4,7 +4,7 @@ from library.PPlay.animation import Animation
 from library.PPlay.gameimage import load_image
 from library.PPlay.keyboard import Keyboard
 from library.PPlay.gameobject import GameObject
-from level_control import LevelControl
+from level_control import Level
 from entity import Entity
 import globals
 
@@ -13,7 +13,7 @@ class Game(object):
 		self.window = Window(globals.WIDTH, globals.HEIGHT)
 		self.window.set_title("JSC")
 
-		self.level = LevelControl(self.window, "./src/levels/level.txt")
+		self.level = Level(self.window, "./src/levels/level.txt")
 		self.jorge = Entity("./src/assets/jorge_idle.png", 8)
 		self.background = Sprite("./src/assets/space.png")
 
@@ -23,7 +23,7 @@ class Game(object):
 		pass
 
 	def update(self):
-		self.jorge.update(self.window.delta_time())
+		self.jorge.update(self.window.delta_time(), self.level)
 
 	def render(self):
 		self.background.draw()
