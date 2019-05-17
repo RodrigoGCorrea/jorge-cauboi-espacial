@@ -1,6 +1,6 @@
 from library.PPlay.sprite import Sprite
 
-class LevelControl(object):
+class Level(object):
 	def __init__(self, window, level_path):
 		self.obstacles = []
 		self.floor = []
