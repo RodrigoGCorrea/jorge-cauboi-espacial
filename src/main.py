@@ -4,7 +4,7 @@ from library.PPlay.animation import Animation
 from library.PPlay.gameimage import load_image
 from library.PPlay.keyboard import Keyboard
 from library.PPlay.gameobject import GameObject
-from level_control import Level
+from level import Level
 from entity import Entity
 import globals
 
@@ -24,11 +24,12 @@ class Game(object):
 
 	def update(self):
 		self.jorge.update(self.window.delta_time(), self.level)
+		self.level.update()
 
 	def render(self):
 		self.background.draw()
 		self.jorge.render()
-		self.level.update()
+		self.level.render()
 
 if __name__ == "__main__":
 	game = Game()

@@ -8,6 +8,9 @@ class Level(object):
 		self.__setup(level_path)
 
 	def update(self):
+		pass
+
+	def render(self):
 		for floor in self.floor:
 			floor.draw()
 		for obstacles in self.obstacles:
