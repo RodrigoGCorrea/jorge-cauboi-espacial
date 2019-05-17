@@ -1,14 +1,14 @@
 from library.PPlay.animation import Animation 
 from library.PPlay.gameimage import load_image
 from library.PPlay.keyboard import Keyboard
+from pygame.transform import flip
 import globals
 
 class Entity(object):
 	def __init__(self, sprite_path, frames):
-		self.frames = frames
 		self.animation = Animation(sprite_path, frames)
 		self.animation.set_position(globals.WIDTH/2 - self.animation.width/2, globals.HEIGHT - self.animation.height - 20)
-		self.animation.set_total_duration(self.frames * globals.FRAME_SPEED)
+		self.animation.set_total_duration(frames * globals.FRAME_SPEED)
 		self.animation.play()
 
 		self.state = "idle" 
@@ -19,10 +19,6 @@ class Entity(object):
 		self.life = 20
 		self.lvl = 1
 
-		self.vel = 100
-
-		self.collided_right = False
-		self.collided_left = False
 		self.moving = 1
 		self.jumping = False
 		self.y_vel = 0
@@ -30,32 +26,49 @@ class Entity(object):
 		self.time = 0
 		self.idle = True
 
+	def update(self, dt, level):
+		if self.state == "walking":
+			if self.direction == "left":
+				self.walk(-globals.X_VELOCITY_PLAYER * dt)
+			elif self.direction == "right":
+				self.walk(globals.X_VELOCITY_PLAYER * dt)
 
-	def update(self, dt):
-		self.__run_behavior(dt)
+		self.set_behavior()
 	
 	def render(self):
+		if self.state == "idle":
+			self.set_animation("./src/assets/jorge_idle.png", 8)
+			if self.direction == "left":
+				self.animation.image = flip(self.animation.image, True, False)
+		elif self.state == "walking":
+			self.set_animation("./src/assets/jorge_running.png", 8)
+			if self.direction == "left":
+				self.animation.image = flip(self.animation.image, True, False)
+
 		self.animation.update()
 		self.animation.draw()
 	
-	def __run_behavior(self, dt):
+	def set_behavior(self):
 		keyboard = Keyboard()
+
+		# IDLE
 		if self.state == "idle":
-			if keyboard.key_pressed("left"):
+			# MOVING LEFT
+			if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False:
 				self.set_direction("left")
 				self.set_state("walking")
-				self.change_animation("./src/assets/jorge_running.png", 8)
-				self.walk(-self.vel * dt)
-			elif keyboard.key_pressed("right"):
+			# MOVING RIGHT
+			elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False:
 				self.set_direction("right")
 				self.set_state("walking")
-				self.change_animation("./src/assets/jorge_running.png", 8)
-				self.walk(self.vel * dt)
 			elif keyboard.key_pressed("up"):
 				pass
 
+		# MOVING
 		elif self.state == "walking":
-			if keyboard.key_pressed("left") == False or keyboard.key_pressed("right") == False:
+			# STOPPED MOVING
+			if (keyboard.key_pressed("left") == False and keyboard.key_pressed("right") == False or 
+				keyboard.key_pressed("left") and keyboard.key_pressed("right")):
 				self.set_state("idle")
 
 		elif self.state == "jumping":
@@ -74,10 +87,13 @@ class Entity(object):
 		else:
 			self.direction = "right"
 			print("error: set_direction entity")
+
+	def set_animation(self, sprite_path, frames):
+		self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
+		self.animation.set_total_duration(frames * globals.FRAME_SPEED)
 	
-	def walk(self, x_velocity):
-		if self.collided_left == False and self.collided_right == False:
-			self.animation.x += x_velocity
+	def walk(self, dx):
+		self.animation.x += dx
 
 	def jump(self, delta_time):
 		if self.jumping == False:
@@ -92,7 +108,3 @@ class Entity(object):
 	def attack(self):
 		pass
 	
-	def change_animation(self, sprite_path, frames):
-		self.frames = frames
-		self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
-		self.animation.set_total_duration(self.frames * globals.FRAME_SPEED)
