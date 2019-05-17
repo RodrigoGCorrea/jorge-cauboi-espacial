@@ -14,26 +14,30 @@ class Entity(object):
 		self.state = "idle" 
 		self.direction = "right"
 
+		self.dx = 0
+		self.dy = 0
+		self.y0 = self.animation.y
+		self.y_time = 0
+
 		self.strg = 1 
 		self.dex = 1
 		self.life = 20
 		self.lvl = 1
 
-		self.moving = 1
-		self.jumping = False
-		self.y_vel = 0
-		self.y0 = self.animation.y
-		self.time = 0
-		self.idle = True
-
 	def update(self, dt, level):
 		if self.state == "walking":
 			if self.direction == "left":
-				self.walk(-globals.X_VELOCITY_PLAYER * dt)
+				self.dx = -globals.X_VELOCITY_PLAYER
 			elif self.direction == "right":
-				self.walk(globals.X_VELOCITY_PLAYER * dt)
+				self.dx = globals.X_VELOCITY_PLAYER
+		elif self.state == "idle":
+			self.dx = 0
+		elif self.state == "jumping":
+			self.dy = globals.Y_VELOCITY_PLAYER
+			self.jump(self.dy, dt)
 
-		self.set_behavior()
+		self.walk(self.dx * dt)
+		self.set_behavior(level)
 	
 	def render(self):
 		if self.state == "idle":
@@ -48,7 +52,7 @@ class Entity(object):
 		self.animation.update()
 		self.animation.draw()
 	
-	def set_behavior(self):
+	def set_behavior(self, level):
 		keyboard = Keyboard()
 
 		# IDLE
@@ -61,8 +65,9 @@ class Entity(object):
 			elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False:
 				self.set_direction("right")
 				self.set_state("walking")
+			# JUMPING
 			elif keyboard.key_pressed("up"):
-				pass
+				self.set_state("jumping")
 
 		# MOVING
 		elif self.state == "walking":
@@ -70,9 +75,22 @@ class Entity(object):
 			if (keyboard.key_pressed("left") == False and keyboard.key_pressed("right") == False or 
 				keyboard.key_pressed("left") and keyboard.key_pressed("right")):
 				self.set_state("idle")
+			# JUMPING
+			elif keyboard.key_pressed("up"):
+				self.set_state("jumping")
+			#TODO COLLISION
+			for obstacle in level.obstacles:
+				if self.animation.collided(obstacle):
+					self.set_state("idle")
 
+		# JUMPING
 		elif self.state == "jumping":
-			pass
+			# MOVING LEFT
+			if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False:
+				self.set_direction("left")
+			# MOVING RIGHT
+			elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False:
+				self.set_direction("right")
 
 	def set_state(self, state):
 		if state == "idle" or state == "walking" or state == "jumping":
@@ -95,15 +113,9 @@ class Entity(object):
 	def walk(self, dx):
 		self.animation.x += dx
 
-	def jump(self, delta_time):
-		if self.jumping == False:
-			self.y_vel = globals.Y_VELOCITY_PLAYER
-			self.y0 = self.animation.y
-			self.time = 0
-		else:
-			self.animation.y = self.y0 - self.y_vel * self.time - (globals.GRAVITY * (self.time)**2)/2
-			self.time += globals.FALL_TIME * delta_time
-			print(self.animation.y, - self.y_vel * self.time - (globals.GRAVITY * (self.time)**2)/2, self.y0)
+	def jump(self, dy, dt):
+		self.animation.y = self.y0 - dy * self.y_time - (globals.GRAVITY * (self.y_time)**2)/2
+		self.y_time += globals.FALL_TIME * dt
 	
 	def attack(self):
 		pass
