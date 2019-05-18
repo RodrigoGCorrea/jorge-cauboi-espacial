@@ -14,8 +14,8 @@ class Level(object):
         for floor in self.floor:
             floor.draw()
         for obstacles in self.obstacles:
-            obstacles.draw() 
-    
+            obstacles.draw()
+
     def move(self, x_velocity):
         for floor in self.floor:
             floor.x += x_velocity

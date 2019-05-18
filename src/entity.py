@@ -34,6 +34,8 @@ class Entity(object):
         self.lvl = 1
 
     def update(self, dt, level):
+        self.set_behavior(level)
+
         if self.state["idle"] or self.state["colliding"]:
             self.dx = 0
             self.dy = 0
@@ -46,19 +48,21 @@ class Entity(object):
             self.dy = globals.Y_VELOCITY_PLAYER
             self.jump(self.dy, dt)
 
-        print(self.animation.x, self.animation.y)
         self.walk(self.dx * dt)
-        self.set_behavior(level)
+        print(self.animation.x, self.animation.y, self.get_state(), self.get_direction())
     
     def render(self):
         if self.state["idle"]:
             self.set_animation("./src/assets/jorge_idle.png", 8)
-            if self.direction["left"]:
-                self.animation.image = flip(self.animation.image, True, False)
         elif self.state["walking"]:
             self.set_animation("./src/assets/jorge_running.png", 8)
-            if self.direction["left"]:
-                self.animation.image = flip(self.animation.image, True, False)
+        elif self.state["jumping"]:
+            self.set_animation("./src/assets/jorge_idle.png", 8)
+        elif self.state["colliding"]:
+            self.set_animation("./src/assets/jorge_idle.png", 8)
+
+        if self.direction["left"]:
+            self.animation.image = flip(self.animation.image, True, False)
 
         self.animation.update()
         self.animation.draw()
@@ -95,13 +99,16 @@ class Entity(object):
             # KEPT MOVING
             if (keyboard.key_pressed("left") and keyboard.key_pressed("right") == False or 
                 keyboard.key_pressed("right") and keyboard.key_pressed("left") == False):
+
                 for obstacle in level.obstacles:
                     if self.animation.collided(obstacle):
                         self.set_state("colliding")
                         break
-            # JUMPING
-            elif keyboard.key_pressed("up"):
-                self.set_state("jumping")
+
+                # JUMPING
+                if keyboard.key_pressed("up"):
+                    self.set_state("jumping")
+
             # STOPPED MOVING
             else:
                 self.set_state("idle")
@@ -139,3 +146,13 @@ class Entity(object):
     def set_animation(self, sprite_path, frames):
         self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
         self.animation.set_total_duration(frames * globals.FRAME_SPEED)
+
+    def get_state(self):
+        for key, value in self.state.items():
+            if value:
+                return key
+
+    def get_direction(self):
+        for key, value in self.direction.items():
+            if value:
+                return key

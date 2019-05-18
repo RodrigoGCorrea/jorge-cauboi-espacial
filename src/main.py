@@ -1,5 +1,6 @@
 from library.PPlay.window import Window
 from library.PPlay.sprite import Sprite
+from library.PPlay.keyboard import Keyboard
 from level import Level
 from entity import Entity
 import globals
@@ -14,7 +15,10 @@ class Game(object):
         self.background = Sprite("./src/assets/space.png")
 
     def events(self):
-        pass
+        keyboard = Keyboard()
+
+        if keyboard.key_pressed("esc"):
+            globals.GAME_STARTED = False
 
     def update(self):
         self.jorge.update(self.window.delta_time(), self.level)
