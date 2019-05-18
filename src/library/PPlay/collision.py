@@ -69,6 +69,3 @@ class Collision():
     def collided_perfect(cls, gameimage1, gameimage2):
         return (Collision.perfect_collision(gameimage1, gameimage2))
                       
-            
-        
-    
