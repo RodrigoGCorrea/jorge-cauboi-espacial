@@ -1,8 +1,8 @@
-from library.PPlay.window import Window
-from library.PPlay.sprite import Sprite
-from level import Level
-from entity import Entity
-import globals
+from .library.PPlay.window import Window
+from .library.PPlay.sprite import Sprite
+from .level import Level
+from .entity import Entity
+from . import globals
 
 class Game(object):
     def __init__(self):

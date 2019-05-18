@@ -1,9 +1,9 @@
-from library.PPlay.animation import Animation 
-from library.PPlay.gameimage import load_image
-from library.PPlay.keyboard import Keyboard
 from pygame.transform import flip
 import math
-import globals
+from .library.PPlay.animation import Animation 
+from .library.PPlay.gameimage import load_image
+from .library.PPlay.keyboard import Keyboard
+from . import globals
 
 class Entity(object):
     def __init__(self, sprite_path, frames):
@@ -139,4 +139,3 @@ class Entity(object):
     def set_animation(self, sprite_path, frames):
         self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
         self.animation.set_total_duration(frames * globals.FRAME_SPEED)
-    
