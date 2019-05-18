@@ -39,6 +39,9 @@ class Entity(object):
         if self.state["idle"] or self.state["colliding"]:
             self.dx = 0
             self.dy = 0
+            self.y_time = 0
+            self.y0 = self.animation.y
+            self.animation.set_position(math.floor(self.animation.x), math.floor(self.animation.y))
         elif self.state["walking"]:
             if self.direction["left"]:
                 self.dx = -globals.X_VELOCITY_PLAYER
@@ -49,7 +52,7 @@ class Entity(object):
             self.jump(self.dy, dt)
 
         self.walk(self.dx * dt)
-        print(self.animation.x, self.animation.y, self.get_state(), self.get_direction())
+        print(self.animation.x, self.animation.y, self.y_time, self.get_state(), self.get_direction())
     
     def render(self):
         if self.state["idle"]:
