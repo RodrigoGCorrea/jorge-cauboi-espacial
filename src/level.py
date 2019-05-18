@@ -40,7 +40,7 @@ class Level(object):
 				if line[col] == "1":
 					tile = Sprite("./src/assets/floor.png")
 					tile.set_position(col * (tile.width - 2), lin * (tile.height - 2))
-					self.floor.append(tile)
+					self.obstacles.append(tile)
 
 		level_constructor.close()
 			
