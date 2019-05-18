@@ -12,6 +12,8 @@ class Entity(object):
         self.animation.set_total_duration(frames * globals.FRAME_SPEED)
         self.animation.play()
 
+        self.set_position = self.animation.set_position
+
         self.direction = {
             "right": True,
             "left": False
@@ -41,7 +43,7 @@ class Entity(object):
             self.dy = 0
             self.y_time = 0
             self.y0 = self.animation.y
-            self.animation.set_position(math.floor(self.animation.x), math.floor(self.animation.y))
+            self.set_position(math.floor(self.animation.x), math.floor(self.animation.y))
         elif self.state["walking"]:
             if self.direction["left"]:
                 self.dx = -globals.X_VELOCITY_PLAYER
@@ -103,14 +105,19 @@ class Entity(object):
             if (keyboard.key_pressed("left") and keyboard.key_pressed("right") == False or 
                 keyboard.key_pressed("right") and keyboard.key_pressed("left") == False):
 
-                for obstacle in level.obstacles:
-                    if self.animation.collided(obstacle):
-                        self.set_state("colliding")
-                        break
-
                 # JUMPING
                 if keyboard.key_pressed("up"):
                     self.set_state("jumping")
+
+                # CHECK COLLISION
+                for obstacle in level.obstacles:
+                    if self.animation.collided(obstacle):
+                        if self.direction["left"]:
+                            self.set_position(obstacle.x + obstacle.width + 1, self.animation.y)
+                        elif self.direction["right"]:
+                            self.set_position(obstacle.x - self.animation.width - 1, self.animation.y)
+                        self.set_state("colliding")
+                        break
 
             # STOPPED MOVING
             else:
@@ -120,6 +127,7 @@ class Entity(object):
         elif self.state["jumping"]:
             for obstacle in level.obstacles:
                 if self.animation.collided(obstacle):
+                    self.set_position(self.animation.x, obstacle.y - self.animation.height - 1)
                     self.set_state("idle")
                     break
 
