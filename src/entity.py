@@ -1,6 +1,6 @@
 from pygame.transform import flip
 import math
-from library.PPlay.animation import Animation 
+from library.PPlay.animation import Animation
 from library.PPlay.gameimage import load_image
 from library.PPlay.keyboard import Keyboard
 import globals
@@ -8,7 +8,10 @@ import globals
 class Entity(object):
     def __init__(self, sprite_path, frames):
         self.animation = Animation(sprite_path, frames)
-        self.animation.set_position(globals.WIDTH/2 - self.animation.width/2, globals.HEIGHT - self.animation.height - 20)
+        self.animation.set_position(
+            globals.WIDTH/2 - self.animation.width/2,
+            200
+        )
         self.animation.set_total_duration(frames * globals.FRAME_SPEED)
         self.animation.play()
 
@@ -16,46 +19,61 @@ class Entity(object):
 
         self.direction = {
             "right": True,
-            "left": False
+            "left": False,
         }
         self.state = {
             "idle": True,
             "walking": False,
             "jumping": False,
+            "falling": False,
             "colliding": False
         }
+        self.colliding = True
 
         self.dx = 0
         self.dy = 0
         self.y0 = self.animation.y
         self.y_time = 0
 
-        self.strg = 1 
+        self.strg = 1
         self.dex = 1
         self.life = 20
         self.lvl = 1
 
     def update(self, dt, level):
-        self.set_behavior(level)
-
+        self.set_behavior(level, dt)
         if self.state["idle"] or self.state["colliding"]:
             self.dx = 0
             self.dy = 0
             self.y_time = 0
             self.y0 = self.animation.y
             self.set_position(math.floor(self.animation.x), math.floor(self.animation.y))
+
         elif self.state["walking"]:
+            self.y0 = self.animation.y
             if self.direction["left"]:
-                self.dx = -globals.X_VELOCITY_PLAYER
+                if self.animation.x < level.boundary[0]:
+                    level.move(globals.X_VELOCITY_PLAYER * dt)
+                    self.dx = 0
+                else:
+                    self.dx = -globals.X_VELOCITY_PLAYER
+
             elif self.direction["right"]:
-                self.dx = globals.X_VELOCITY_PLAYER
+                if self.animation.x > level.boundary[1]:
+                    level.move(-globals.X_VELOCITY_PLAYER * dt)
+                    self.dx = 0
+                else:
+                    self.dx = globals.X_VELOCITY_PLAYER
+
         elif self.state["jumping"]:
             self.dy = globals.Y_VELOCITY_PLAYER
             self.jump(self.dy, dt)
-
+        
+        self.falling(dt)
         self.walk(self.dx * dt)
-        print(self.animation.x, self.animation.y, self.y_time, self.get_state(), self.get_direction())
-    
+        self.check_collision(level)
+        print(self.animation.x, self.animation.y, self.get_state(), self.get_direction(), dt)
+
     def render(self):
         if self.state["idle"]:
             self.set_animation("./src/assets/jorge_idle.png", 8)
@@ -78,11 +96,15 @@ class Entity(object):
     def jump(self, dy, dt):
         self.y_time += globals.FALL_TIME * dt
         self.animation.y = self.y0 - dy * self.y_time - (globals.GRAVITY * (self.y_time)**2)/2
-    
+
+    def falling(self, dt):
+        self.y_time += globals.FALL_TIME * dt
+        self.animation.y = self.y0 - (globals.GRAVITY * (self.y_time)**2)/2
+
     def attack(self):
         pass
-    
-    def set_behavior(self, level):
+
+    def set_behavior(self, level, dt):
         keyboard = Keyboard()
 
         # IDLE
@@ -98,16 +120,22 @@ class Entity(object):
             # JUMPING
             elif keyboard.key_pressed("up"):
                 self.set_state("jumping")
+            
+            elif self.colliding == False:
+                self.set_state("falling")
 
         # MOVING
         elif self.state["walking"]:
             # KEPT MOVING
-            if (keyboard.key_pressed("left") and keyboard.key_pressed("right") == False or 
+            if (keyboard.key_pressed("left") and keyboard.key_pressed("right") == False or
                 keyboard.key_pressed("right") and keyboard.key_pressed("left") == False):
 
                 # JUMPING
                 if keyboard.key_pressed("up"):
                     self.set_state("jumping")
+                
+                elif self.colliding == False:
+                    self.set_state("falling")
 
                 # CHECK COLLISION
                 for obstacle in level.obstacles:
@@ -125,9 +153,27 @@ class Entity(object):
 
         # JUMPING
         elif self.state["jumping"]:
+            # STRAFE LEFT
+            if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False:
+                if self.animation.x < level.boundary[0]:
+                    level.move(globals.X_VELOCITY_PLAYER * dt)
+                    self.dx = 0
+                else:
+                    self.dx = -globals.X_VELOCITY_PLAYER
+                self.set_direction("left")
+            #STRAFE RIGHT
+            elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False:
+                if self.animation.x > level.boundary[1]:
+                    level.move(-globals.X_VELOCITY_PLAYER * dt)
+                    self.dx = 0
+                else:
+                    self.dx = globals.X_VELOCITY_PLAYER
+                self.set_direction("right")
+
+            # CHECKING COLLIDING
             for obstacle in level.obstacles:
                 if self.animation.collided(obstacle):
-                    self.set_position(self.animation.x, obstacle.y - self.animation.height - 1)
+                    self.set_position(self.animation.x, obstacle.y - self.animation.height - 0.5)
                     self.set_state("idle")
                     break
 
@@ -139,7 +185,15 @@ class Entity(object):
             elif self.direction["right"] and keyboard.key_pressed("left"):
                 self.set_state("walking")
                 self.set_direction("left")
-
+    
+    def check_collision(self, level):
+        for obstacle in level.obstacles:
+            if self.animation.collided(obstacle):
+                self.colliding = True
+                break
+            else:
+                self.colliding = False
+    
     def set_state(self, state):
         for key, _ in self.state.items():
             if key == state:
