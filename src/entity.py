@@ -1,9 +1,9 @@
 from pygame.transform import flip
 import math
-from .library.PPlay.animation import Animation 
-from .library.PPlay.gameimage import load_image
-from .library.PPlay.keyboard import Keyboard
-from . import globals
+from library.PPlay.animation import Animation 
+from library.PPlay.gameimage import load_image
+from library.PPlay.keyboard import Keyboard
+import globals
 
 class Entity(object):
     def __init__(self, sprite_path, frames):

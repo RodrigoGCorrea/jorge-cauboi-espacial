@@ -1,4 +1,4 @@
-from .library.PPlay.sprite import Sprite
+from library.PPlay.sprite import Sprite
 
 class Level(object):
     def __init__(self, window, level_path):
