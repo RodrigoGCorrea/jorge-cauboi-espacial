@@ -145,6 +145,7 @@ class Entity(object):
 
     def set_animation(self, sprite_path, frames):
         self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
+        self.animation.total_frames = frames
         self.animation.set_total_duration(frames * globals.FRAME_SPEED)
 
     def get_state(self):
