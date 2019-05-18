@@ -1,9 +1,5 @@
 from library.PPlay.window import Window
 from library.PPlay.sprite import Sprite
-from library.PPlay.animation import Animation
-from library.PPlay.gameimage import load_image
-from library.PPlay.keyboard import Keyboard
-from library.PPlay.gameobject import GameObject
 from level import Level
 from entity import Entity
 import globals
@@ -16,8 +12,6 @@ class Game(object):
 		self.level = Level(self.window, "./src/levels/level.txt")
 		self.jorge = Entity("./src/assets/jorge_idle.png", 8)
 		self.background = Sprite("./src/assets/space.png")
-
-		self.keyboard = Keyboard()
 
 	def events(self):
 		pass
