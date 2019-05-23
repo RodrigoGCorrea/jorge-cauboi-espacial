@@ -10,7 +10,7 @@ class Entity(object):
         self.animation = Animation(sprite_path, frames)
         self.animation.set_position(
             globals.WIDTH/2 - self.animation.width/2,
-            200
+            400
         )
         self.animation.set_total_duration(frames * globals.FRAME_SPEED)
         self.animation.play()

@@ -146,21 +146,22 @@ class Window():
                    [Bold,
                          [Italic]]]]
     """
-    def draw_text(self, text, x, y, size=12, color=(0,0,0),
-                 font_name="Arial", bold=False, italic=False):
+    def draw_text(self, text, x, y, font_path,
+                    size=12, color=(0,0,0), bold=False, italic=False):
         # Creates a Font from the system fonts
         # SysFont(name, size, bold=False, italic=False) -> Font
-        font = pygame.font.SysFont(font_name, size, bold, italic)
-
+        font = pygame.font.Font(font_path, size)
+    
         # Creates a pygame.Surface with the text rendered on it
         # render(text, antialias, color, background=None)->Surface
         font_surface = font.render(text, True, color)
         # That's because pygame does NOT provide a way
         # to directly draw text on an existing Surface.
         # So you must use Font.render() -> Surface and BLIT
+        font_rect = font_surface.get_rect()
         
         # Finally! BLIT!
-        self.screen.blit(font_surface, [x, y])
+        self.screen.blit(font_surface, [x - font_rect.width/2, y - font_rect.height/2])
 
 #---------------------CLASS METHODS--------------------------
     """Returns the drawing surface"""

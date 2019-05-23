@@ -3,6 +3,7 @@ from library.PPlay.sprite import Sprite
 from library.PPlay.keyboard import Keyboard
 from level import Level
 from entity import Entity
+from menu import Menu
 import globals
 
 class Game(object):
@@ -13,6 +14,7 @@ class Game(object):
         self.level = Level(self.window, "./src/levels/level.txt")
         self.jorge = Entity("./src/assets/jorge_idle.png", 8)
         self.background = Sprite("./src/assets/space.png")
+        self.menu = Menu(self.window)
 
     def events(self):
         keyboard = Keyboard()
@@ -32,7 +34,10 @@ class Game(object):
 if __name__ == "__main__":
     game = Game()
     while globals.GAME_STARTED:
-        game.events()
-        game.update()
-        game.render()
+        if globals.STATE == 0:
+            game.menu.run()
+        if globals.STATE == 1:
+            game.events()
+            game.update()
+            game.render()
         game.window.update()
