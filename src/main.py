@@ -12,7 +12,7 @@ class Game(object):
         self.window.set_title("JSC")
 
         self.level = Level(self.window, "./src/levels/level.txt")
-        self.jorge = Entity("./src/assets/jorge_idle.png", 8)
+        self.jorge = Entity("./src/assets/jorge_idle.png", 8, self.level)
         self.background = Sprite("./src/assets/space.png")
         self.menu = Menu(self.window)
 

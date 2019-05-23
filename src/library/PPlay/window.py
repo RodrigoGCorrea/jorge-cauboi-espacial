@@ -162,6 +162,7 @@ class Window():
         
         # Finally! BLIT!
         self.screen.blit(font_surface, [x - font_rect.width/2, y - font_rect.height/2])
+        
 
 #---------------------CLASS METHODS--------------------------
     """Returns the drawing surface"""

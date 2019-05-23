@@ -6,11 +6,11 @@ from library.PPlay.keyboard import Keyboard
 import globals
 
 class Entity(object):
-    def __init__(self, sprite_path, frames):
+    def __init__(self, sprite_path, frames, level):
         self.animation = Animation(sprite_path, frames)
         self.animation.set_position(
             globals.WIDTH/2 - self.animation.width/2,
-            400
+            520
         )
         self.animation.set_total_duration(frames * globals.FRAME_SPEED)
         self.animation.play()
@@ -25,10 +25,13 @@ class Entity(object):
             "idle": True,
             "walking": False,
             "jumping": False,
-            "falling": False,
-            "colliding": False
         }
-        self.colliding = True
+        self.colliding = {
+            "left": False,
+            "right": False,
+            "top": False,
+            "bottom": False,
+        }
 
         self.dx = 0
         self.dy = 0
@@ -40,14 +43,16 @@ class Entity(object):
         self.life = 20
         self.lvl = 1
 
+        self.colliding_tuple = (0, globals.WIDTH)
+        self.colliding_initial = level.obstacles[0]
+
     def update(self, dt, level):
-        self.set_behavior(level, dt)
-        if self.state["idle"] or self.state["colliding"]:
+        if self.state["idle"]:
             self.dx = 0
             self.dy = 0
             self.y_time = 0
             self.y0 = self.animation.y
-            self.set_position(math.floor(self.animation.x), math.floor(self.animation.y))
+            self.set_position(self.animation.x, math.floor(self.animation.y))
 
         elif self.state["walking"]:
             self.y0 = self.animation.y
@@ -68,11 +73,12 @@ class Entity(object):
         elif self.state["jumping"]:
             self.dy = globals.Y_VELOCITY_PLAYER
             self.jump(self.dy, dt)
-        
-        self.falling(dt)
+
+        if self.colliding["bottom"] == False and self.state["jumping"] == False:
+            self.falling(dt)
         self.walk(self.dx * dt)
-        self.check_collision(level)
-        print(self.animation.x, self.animation.y, self.get_state(), self.get_direction(), dt)
+        self.set_behavior(level, dt)
+        print(self.colliding["bottom"], self.animation.x, self.animation.y, self.get_direction(), self.colliding_tuple, dt)
 
     def render(self):
         if self.state["idle"]:
@@ -80,8 +86,6 @@ class Entity(object):
         elif self.state["walking"]:
             self.set_animation("./src/assets/jorge_running.png", 8)
         elif self.state["jumping"]:
-            self.set_animation("./src/assets/jorge_idle.png", 8)
-        elif self.state["colliding"]:
             self.set_animation("./src/assets/jorge_idle.png", 8)
 
         if self.direction["left"]:
@@ -120,9 +124,8 @@ class Entity(object):
             # JUMPING
             elif keyboard.key_pressed("up"):
                 self.set_state("jumping")
-            
-            elif self.colliding == False:
-                self.set_state("falling")
+            #FALLING
+            self.set_fall(level)
 
         # MOVING
         elif self.state["walking"]:
@@ -133,23 +136,13 @@ class Entity(object):
                 # JUMPING
                 if keyboard.key_pressed("up"):
                     self.set_state("jumping")
-                
-                elif self.colliding == False:
-                    self.set_state("falling")
-
-                # CHECK COLLISION
-                for obstacle in level.obstacles:
-                    if self.animation.collided(obstacle):
-                        if self.direction["left"]:
-                            self.set_position(obstacle.x + obstacle.width + 1, self.animation.y)
-                        elif self.direction["right"]:
-                            self.set_position(obstacle.x - self.animation.width - 1, self.animation.y)
-                        self.set_state("colliding")
-                        break
 
             # STOPPED MOVING
             else:
                 self.set_state("idle")
+            
+            #FALLING
+            self.set_fall(level)
 
         # JUMPING
         elif self.state["jumping"]:
@@ -177,23 +170,6 @@ class Entity(object):
                     self.set_state("idle")
                     break
 
-        # COLLIDING
-        elif self.state["colliding"]:
-            if self.direction["left"] and keyboard.key_pressed("right"):
-                self.set_state("walking")
-                self.set_direction("right")
-            elif self.direction["right"] and keyboard.key_pressed("left"):
-                self.set_state("walking")
-                self.set_direction("left")
-    
-    def check_collision(self, level):
-        for obstacle in level.obstacles:
-            if self.animation.collided(obstacle):
-                self.colliding = True
-                break
-            else:
-                self.colliding = False
-    
     def set_state(self, state):
         for key, _ in self.state.items():
             if key == state:
@@ -222,3 +198,26 @@ class Entity(object):
         for key, value in self.direction.items():
             if value:
                 return key
+
+    def set_fall(self, level):
+        for obstacle in level.obstacles:
+            if self.animation.collided(obstacle):
+                self.colliding_initial = obstacle
+                self.animation.set_position(self.animation.x, math.floor(self.animation.y) - 1)
+                self.colliding["bottom"] = True
+                break
+
+        left_limit = globals.WIDTH
+        right_limit = 0
+        for obstacle in level.obstacles:
+            if self.colliding_initial.collided(obstacle):
+                if obstacle.x <= left_limit:
+                    left_limit = obstacle.x
+                if obstacle.x >= right_limit:
+                    right_limit = obstacle.x + level.obstacles[0].width
+        
+        self.colliding_tuple = (left_limit, right_limit)
+
+        if self.colliding["bottom"] == True:
+            if self.colliding_tuple[0] >= self.animation.x or self.animation.x >= self.colliding_tuple[1]:
+                self.colliding["bottom"] = False

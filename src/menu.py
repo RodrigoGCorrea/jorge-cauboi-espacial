@@ -31,4 +31,7 @@ class Menu(object):
             globals.STATE = 1
     
     def __set_pos(self):
-        self.play_button.set_position(globals.WIDTH/2 - self.play_button.width/2, globals.HEIGHT/2 - self.play_button.height/2)
+        self.play_button.set_position(
+            globals.WIDTH/2 - self.play_button.width/2, 
+            globals.HEIGHT/2 - self.play_button.height/2
+            )
