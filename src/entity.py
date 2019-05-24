@@ -5,6 +5,8 @@ from library.PPlay.gameimage import load_image
 from library.PPlay.keyboard import Keyboard
 import globals
 
+keyboard = Keyboard()
+
 class Entity(object):
     def __init__(self, sprite_path, frames, level):
         self.animation = Animation(sprite_path, frames)
@@ -47,10 +49,11 @@ class Entity(object):
         self.colliding_initial = level.obstacles[0]
 
     def update(self, dt, level):
+        self.set_behavior(level, dt)
+
         if self.state["idle"]:
             self.dx = 0
             self.dy = 0
-            self.y_time = 0
             self.y0 = self.animation.y
             self.set_position(self.animation.x, math.floor(self.animation.y))
 
@@ -61,14 +64,20 @@ class Entity(object):
                     level.move(globals.X_VELOCITY_PLAYER * dt)
                     self.dx = 0
                 else:
-                    self.dx = -globals.X_VELOCITY_PLAYER
+                    if self.colliding["left"] == True:
+                        self.dx = 0
+                    else:
+                        self.dx = -globals.X_VELOCITY_PLAYER
 
             elif self.direction["right"]:
                 if self.animation.x > level.boundary[1]:
                     level.move(-globals.X_VELOCITY_PLAYER * dt)
                     self.dx = 0
                 else:
-                    self.dx = globals.X_VELOCITY_PLAYER
+                    if self.colliding["right"] == True:
+                        self.dx = 0
+                    else:
+                        self.dx = globals.X_VELOCITY_PLAYER
 
         elif self.state["jumping"]:
             self.dy = globals.Y_VELOCITY_PLAYER
@@ -77,8 +86,7 @@ class Entity(object):
         if self.colliding["bottom"] == False and self.state["jumping"] == False:
             self.falling(dt)
         self.walk(self.dx * dt)
-        self.set_behavior(level, dt)
-        print(self.colliding["bottom"], self.animation.x, self.animation.y, self.get_direction(), self.colliding_tuple, dt)
+        print(self.colliding["left"], self.colliding["right"], self.animation.x, self.animation.y, self.get_direction(), self.colliding_tuple, dt)
 
     def render(self):
         if self.state["idle"]:
@@ -109,8 +117,6 @@ class Entity(object):
         pass
 
     def set_behavior(self, level, dt):
-        keyboard = Keyboard()
-
         # IDLE
         if self.state["idle"]:
             # MOVING LEFT
@@ -140,9 +146,6 @@ class Entity(object):
             # STOPPED MOVING
             else:
                 self.set_state("idle")
-            
-            #FALLING
-            self.set_fall(level)
 
         # JUMPING
         elif self.state["jumping"]:
@@ -167,8 +170,13 @@ class Entity(object):
             for obstacle in level.obstacles:
                 if self.animation.collided(obstacle):
                     self.set_position(self.animation.x, obstacle.y - self.animation.height - 0.5)
+                    self.y_time = 0
                     self.set_state("idle")
                     break
+        
+        #self.collided_side(level)
+        self.set_fall(level)
+        
 
     def set_state(self, state):
         for key, _ in self.state.items():
@@ -200,24 +208,54 @@ class Entity(object):
                 return key
 
     def set_fall(self, level):
+        colliding_number = 0
         for obstacle in level.obstacles:
             if self.animation.collided(obstacle):
                 self.colliding_initial = obstacle
-                self.animation.set_position(self.animation.x, math.floor(self.animation.y) - 1)
+                if self.colliding["left"] == False and self.colliding["right"] == False:
+                    self.animation.set_position(self.animation.x, math.floor(self.animation.y) - 1)
                 self.colliding["bottom"] = True
-                break
+                self.y_time = 0
+                colliding_number += 1
+        
+        error = 0
+        if colliding_number == 2:
+            error = level.obstacles[0].width
 
-        left_limit = globals.WIDTH
-        right_limit = 0
+        left_limit = self.colliding_initial.x
+        right_limit = self.colliding_initial.x + self.colliding_initial.width
         for obstacle in level.obstacles:
             if self.colliding_initial.collided(obstacle):
-                if obstacle.x <= left_limit:
-                    left_limit = obstacle.x
-                if obstacle.x >= right_limit:
-                    right_limit = obstacle.x + level.obstacles[0].width
+                if obstacle.x < left_limit:
+                    left_limit = obstacle.x - error
+                if obstacle.x > right_limit:
+                    right_limit = obstacle.x + error + level.obstacles[0].width
         
         self.colliding_tuple = (left_limit, right_limit)
 
         if self.colliding["bottom"] == True:
             if self.colliding_tuple[0] >= self.animation.x or self.animation.x >= self.colliding_tuple[1]:
                 self.colliding["bottom"] = False
+
+    ''' def collided_side(self, level):
+        collide_object = None
+        for obstacle in level.obstacles:
+            if collide_object == None:
+                if obstacle.collided(self.animation):
+                    collide_object = obstacle
+            else:
+                if obstacle.collided(self.animation) and obstacle.y > collide_object.y:
+                    collide_object = obstacle
+        if collide_object == None:
+            self.colliding["left"] = False
+            self.colliding["right"] = False
+        else:
+            if collide_object.y > self.animation.y + self.animation.height - 10:
+                if collide_object.x < self.animation.x:
+                    self.colliding["left"] = True
+                if collide_object.x > self.animation.x:
+                    self.colliding["right"] = True
+            else:
+                self.colliding["left"] = False
+                self.colliding["right"] = False 
+'''
