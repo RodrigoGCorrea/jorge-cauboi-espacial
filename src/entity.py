@@ -9,7 +9,7 @@ class Entity(object):
     def __init__(self, window):
         self.window = window
         self.animation = Animation("./src/assets/jorge_idle.png", 8)
-        self.animation.set_position(globals.WIDTH/2, 400)
+        self.animation.set_position(globals.WIDTH/2, 500)
 
         self.colliding = {
             "left": False,
@@ -28,10 +28,10 @@ class Entity(object):
         self.gravity = globals.GRAVITY
         
         
-    def update(self, level, ):
+    def update(self, level, camera):
         self.clear_variables()
         self.fall()
-        self.walk()
+        self.walk(camera)
         self.jump()
         self.collision_y(level)
         self.collision_x(level)
@@ -39,11 +39,11 @@ class Entity(object):
     def render(self):
         self.animation.draw()
     
-    def walk(self):
+    def walk(self, camera):
         #set velocity
-        if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False and self.colliding["left"] == False:
+        if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False and self.colliding["left"] == False and camera.cam_velocity == 0:
             self.velocity["x"] = -globals.X_VELOCITY_PLAYER
-        elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False and self.colliding["right"] == False:
+        elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False and self.colliding["right"] == False and camera.cam_velocity == 0:
             self.velocity["x"] = globals.X_VELOCITY_PLAYER
         else:
             self.velocity["x"] = 0

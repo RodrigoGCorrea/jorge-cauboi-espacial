@@ -4,6 +4,7 @@ from library.PPlay.keyboard import Keyboard
 from level import Level
 from entity import Entity
 from menu import Menu
+from camera import Camera
 import globals
 
 class Game(object):
@@ -15,6 +16,7 @@ class Game(object):
         self.jorge = Entity(self.window)
         self.background = Sprite("./src/assets/space.png")
         self.menu = Menu(self.window)
+        self.camera = Camera(self.window)
 
     def events(self):
         keyboard = Keyboard()
@@ -24,7 +26,8 @@ class Game(object):
 
     def update(self):
         self.level.update()
-        self.jorge.update(self.level)
+        self.jorge.update(self.level, self.camera)
+        self.camera.update(self.jorge, self.level)
 
 
     def render(self):

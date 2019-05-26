@@ -4,7 +4,6 @@ class Level(object):
     def __init__(self, window, level_path):
         self.obstacles = []
         self.window = window
-        self.boundary = ((1/4) * self.window.width, (3/4) * self.window.width)
         self.__setup(level_path)
 
     def update(self):
