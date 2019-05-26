@@ -12,7 +12,7 @@ class Game(object):
         self.window.set_title("JSC")
 
         self.level = Level(self.window, "./src/levels/level.txt")
-        self.jorge = Entity("./src/assets/jorge_idle.png", 8, self.level)
+        self.jorge = Entity(self.window)
         self.background = Sprite("./src/assets/space.png")
         self.menu = Menu(self.window)
 
@@ -23,13 +23,14 @@ class Game(object):
             globals.GAME_STARTED = False
 
     def update(self):
-        self.jorge.update(self.window.delta_time(), self.level)
         self.level.update()
+        self.jorge.update(self.level)
+
 
     def render(self):
         self.background.draw()
-        self.jorge.render()
         self.level.render()
+        self.jorge.render()
 
 if __name__ == "__main__":
     game = Game()
@@ -41,3 +42,4 @@ if __name__ == "__main__":
             game.update()
             game.render()
         game.window.update()
+        game.window.clock.tick(120)

@@ -1,6 +1,7 @@
 # Pygame and system modules
 import sys
 import pygame
+from pygame.time import Clock
 from pygame.locals import *
 from . import keyboard
 from . import mouse
@@ -34,7 +35,7 @@ class Window():
         self.curr_time = 0  # current frame time
         self.last_time = 0  # last frame time 
         self.total_time = 0  # += curr-last(delta_time), update()
-
+        self.clock = Clock()
         # Creates the screen (pygame.Surface)
         # There are some useful flags (look pygame's docs)
         # It's like a static attribute in Java
