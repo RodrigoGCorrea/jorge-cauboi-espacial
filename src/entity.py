@@ -24,23 +24,26 @@ class Entity(object):
         }
         self.time = 0
         self.jumping = False
+        self.is_over_object = False
+        self.gravity = globals.GRAVITY
         
         
     def update(self, level, ):
         self.clear_variables()
         self.fall()
         self.walk()
-        self.collision_y(level)
         self.jump()
+        self.collision_y(level)
+        self.collision_x(level)
 
     def render(self):
         self.animation.draw()
     
     def walk(self):
         #set velocity
-        if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False:
+        if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False and self.colliding["left"] == False:
             self.velocity["x"] = -globals.X_VELOCITY_PLAYER
-        elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False:
+        elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False and self.colliding["right"] == False:
             self.velocity["x"] = globals.X_VELOCITY_PLAYER
         else:
             self.velocity["x"] = 0
@@ -59,16 +62,29 @@ class Entity(object):
         if self.jumping:
             self.clock()
             self.velocity["y"] = 3 + globals.Y_VELOCITY_PLAYER * self.time
-            self.animation.y += (globals.GRAVITY * self.time**2)/2 - self.velocity["y"] 
+            self.animation.y += (self.gravity * self.time**2)/2 - self.velocity["y"] 
 
   
     def fall(self):
         if self.colliding["bottom"] == False:
             self.clock()
-            self.animation.y += (globals.GRAVITY * self.time**2)/2
+            if self.is_over_object == False and self.jumping == False:
+                self.gravity = 5 * globals.GRAVITY
+                self.animation.y += (self.gravity * self.time**2)/2
+            self.gravity = globals.GRAVITY
 
 
     def collision_x(self, level):
+        for obstacle in level.obstacles:
+            if self.animation.collided(obstacle) and self.animation.x < obstacle.x + obstacle.width and keyboard.key_pressed("left"):
+                self.colliding["left"] = True
+                self.animation.set_position(obstacle.x + obstacle.width, self.animation.y)
+                break
+            elif self.animation.collided(obstacle) and self.animation.x + self.animation.width > obstacle.x and keyboard.key_pressed("right"):
+                self.colliding["right"] = True
+                self.animation.set_position(obstacle.x - self.animation.width, self.animation.y)
+                break
+                
         if self.colliding["left"] == True and keyboard.key_pressed("right"):
             self.colliding["left"] = False
         
@@ -83,7 +99,20 @@ class Entity(object):
                     self.jumping = False
                     self.animation.set_position(self.animation.x, obstacle.y - self.animation.height)
 
+        if self.colliding["bottom"] == True and (keyboard.key_pressed("left") or keyboard.key_pressed("right")) and self.jumping == False:
+            self.is_over_object = False
+            for obstacle in level.obstacles:
+                if self.animation.y == obstacle.y - self.animation.height:
+                    if obstacle.x < self.animation.x < obstacle.x + obstacle.width or obstacle.x < self.animation.x + self.animation.width < obstacle.x + obstacle.width:
+                        self.is_over_object = True
+                        break
+            if self.is_over_object == False:
+                self.colliding["bottom"] = False
+
+                    
+
     def clear_variables(self):
         if self.colliding["bottom"] == True and self.jumping == False:
             self.time = 0
             self.velocity["y"] = 0
+            self.gravity = globals.GRAVITY
