@@ -3,13 +3,10 @@ from library.PPlay.keyboard import Keyboard
 from pygame.transform import flip
 import globals
 
-keyboard = Keyboard()
-
 class Entity(object):
-    def __init__(self, window):
+    def __init__(self, window, animation_path, animation_frame):
         self.window = window
-        self.animation = Animation("./src/assets/jorge_idle.png", 8)
-        self.animation.set_position(globals.WIDTH/2, 500)
+        self.animation = Animation(animation_path, animation_frame)
 
         self.colliding = {
             "left": False,
@@ -22,32 +19,21 @@ class Entity(object):
             "x": 0,
             "y": 0
         }
+
+        self.direction = {
+            "left": False,
+            "right": False
+        }
+
         self.time = 0
         self.jumping = False
         self.is_over_object = False
         self.gravity = globals.GRAVITY
-        
-        
-    def update(self, level, camera):
-        self.clear_variables()
-        self.fall()
-        self.walk(camera)
-        self.jump()
-        self.collision_y(level)
-        self.collision_x(level)
 
     def render(self):
         self.animation.draw()
     
-    def walk(self, camera):
-        #set velocity
-        if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False and self.colliding["left"] == False and camera.cam_velocity == 0:
-            self.velocity["x"] = -globals.X_VELOCITY_PLAYER
-        elif keyboard.key_pressed("right") and keyboard.key_pressed("left") == False and self.colliding["right"] == False and camera.cam_velocity == 0:
-            self.velocity["x"] = globals.X_VELOCITY_PLAYER
-        else:
-            self.velocity["x"] = 0
-        
+    def walk(self):
         if self.colliding["left"] == False and self.colliding["right"] == False:
             self.animation.x += self.velocity["x"] * self.window.delta_time()
 
@@ -55,10 +41,6 @@ class Entity(object):
         self.time += self.window.delta_time()
     
     def jump(self):
-        if self.colliding["bottom"] == True:
-            if keyboard.key_pressed("up"):
-                self.jumping = True
-                self.colliding["bottom"] = False
         if self.jumping:
             self.clock()
             self.velocity["y"] = 3 + globals.Y_VELOCITY_PLAYER * self.time
@@ -76,19 +58,19 @@ class Entity(object):
 
     def collision_x(self, level):
         for obstacle in level.obstacles:
-            if self.animation.collided(obstacle) and self.animation.x < obstacle.x + obstacle.width and keyboard.key_pressed("left"):
+            if self.animation.collided(obstacle) and self.animation.x < obstacle.x + obstacle.width and self.direction["left"] == True:
                 self.colliding["left"] = True
                 self.animation.set_position(obstacle.x + obstacle.width, self.animation.y)
                 break
-            elif self.animation.collided(obstacle) and self.animation.x + self.animation.width > obstacle.x and keyboard.key_pressed("right"):
+            elif self.animation.collided(obstacle) and self.animation.x + self.animation.width > obstacle.x and self.direction["right"] == True:
                 self.colliding["right"] = True
                 self.animation.set_position(obstacle.x - self.animation.width, self.animation.y)
                 break
                 
-        if self.colliding["left"] == True and keyboard.key_pressed("right"):
+        if self.colliding["left"] == True and self.direction["right"]:
             self.colliding["left"] = False
         
-        elif self.colliding["right"] == True and keyboard.key_pressed("left"):
+        elif self.colliding["right"] == True and self.direction["left"]:
             self.colliding["right"] = False
     
     def collision_y(self, level):
@@ -99,7 +81,7 @@ class Entity(object):
                     self.jumping = False
                     self.animation.set_position(self.animation.x, obstacle.y - self.animation.height)
 
-        if self.colliding["bottom"] == True and (keyboard.key_pressed("left") or keyboard.key_pressed("right")) and self.jumping == False:
+        if self.colliding["bottom"] == True and (self.direction["left"] or self.direction["right"]) and self.jumping == False:
             self.is_over_object = False
             for obstacle in level.obstacles:
                 if self.animation.y == obstacle.y - self.animation.height:
