@@ -8,6 +8,7 @@ from camera import Camera
 from events import Events
 import globals
 
+
 class Game(object):
     def __init__(self):
         self.window = Window(globals.WIDTH, globals.HEIGHT)
@@ -29,6 +30,7 @@ class Game(object):
         self.background.draw()
         self.level.render()
         self.jorge.render()
+
 
 if __name__ == "__main__":
     game = Game()
