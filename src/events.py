@@ -8,7 +8,7 @@ keyboard = Keyboard()
 
 
 class Events(object):
-    def __init__(self, player, enemy):
+    def __init__(self, player, enemy=None):
         self.player = player
         self.enemy = enemy
 
