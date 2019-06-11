@@ -1,4 +1,5 @@
 from player import Player
+from enemy import Enemy
 from library.PPlay.keyboard import Keyboard
 
 import globals
@@ -7,8 +8,9 @@ keyboard = Keyboard()
 
 
 class Events(object):
-    def __init__(self, player):
+    def __init__(self, player, enemy):
         self.player = player
+        self.enemy = enemy
 
     def update(self, level, camera):
         self.control_events()
@@ -35,7 +37,7 @@ class Events(object):
             self.player.velocity["x"] = 0
 
         # jump
-        if self.player.colliding["bottom"] == True:
+        if self.player.colliding["bottom"] == True and self.player.jumping == False:
             if keyboard.key_pressed("up"):
                 self.player.jumping = True
                 self.player.colliding["bottom"] = False
@@ -51,3 +53,14 @@ class Events(object):
     def control_events(self):
         if keyboard.key_pressed("esc"):
             globals.GAME_STARTED = False
+
+    def enemy_events(self):
+        # direction
+        if self.player.x + self.player.width/2 < self.enemy.x:
+            self.player.direction["left"] = True
+            self.player.direction["right"] = False
+        else:
+            self.player.direction["left"] = False
+            self.player.direction["right"] = True
+        # movement
+        # jump

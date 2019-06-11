@@ -41,4 +41,5 @@ if __name__ == "__main__":
             game.update()
             game.render()
         game.window.update()
-        game.window.clock.tick(120)
+        game.window.clock.tick(60)
+        print(game.window.clock.get_fps())
