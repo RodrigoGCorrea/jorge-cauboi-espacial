@@ -1,12 +1,10 @@
 from pygame import math
 
-from window import window
+from instances import window, keyboard
 from entity import Entity
-from library.PPlay.keyboard import Keyboard
 
 import globals
 
-keyboard = Keyboard()
 player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
 player.set_position(10, window.height / 2)
 
