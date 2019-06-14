@@ -1,26 +1,26 @@
 from library.PPlay.sprite import Sprite
 from library.PPlay.keyboard import Keyboard
 
-from instances import window, keyboard
-from menu import Menu
+from environment import variables as gvar
+from environment.instances import window, keyboard
 
-import player
-import globals
+from controller import player
+from controller.menu import Menu
 
 background = Sprite("./src/assets/tileset/background.png")
 menu = Menu(window)
 
 if __name__ == "__main__":
-    while globals.GAME_STARTED:
-        if globals.STATE == 0:
+    while gvar.GAME_STARTED:
+        if gvar.STATE == 0:
             if keyboard.key_pressed("esc"):
-                globals.GAME_STARTED = False
+                gvar.GAME_STARTED = False
 
             menu.run()
 
-        if globals.STATE == 1:
+        if gvar.STATE == 1:
             if keyboard.key_pressed("esc"):
-                globals.STATE = 0
+                gvar.STATE = 0
                 window.delay(150)
 
             background.draw()

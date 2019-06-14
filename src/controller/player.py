@@ -1,18 +1,17 @@
 from pygame import math
 
-from instances import window, keyboard
-from entity import Entity
-
-import globals
+from environment import variables as gvar
+from environment.instances import window, keyboard
+from classes.entity import Entity
 
 player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
 player.set_position(10, window.height / 2)
 
 vel_stop = math.Vector2(0)
-vel_right = math.Vector2(globals.VELOCITY_PLAYER, 0)
-vel_left = math.Vector2(-globals.VELOCITY_PLAYER, 0)
-vel_down = math.Vector2(0, globals.VELOCITY_PLAYER)
-vel_up = math.Vector2(0, -globals.VELOCITY_PLAYER)
+vel_right = math.Vector2(gvar.VELOCITY_PLAYER, 0)
+vel_left = math.Vector2(-gvar.VELOCITY_PLAYER, 0)
+vel_down = math.Vector2(0, gvar.VELOCITY_PLAYER)
+vel_up = math.Vector2(0, -gvar.VELOCITY_PLAYER)
 
 
 def run():

@@ -2,14 +2,15 @@ from pygame import math
 
 from library.PPlay.animation import Animation
 from library.PPlay.gameimage import load_image
-import globals
+
+from environment import variables as gvar
 
 
 class Entity(object):
     def __init__(self, window, sprite_path, frames):
         self.window = window
         self.animation = Animation(sprite_path, frames)
-        self.animation.set_sequence_time(0, frames, globals.FRAME_SPEED)
+        self.animation.set_sequence_time(0, frames, gvar.FRAME_SPEED)
         self.animation.play()
 
         self.colliding = {"left": False, "right": False, "top": False, "bottom": False}
@@ -33,7 +34,7 @@ class Entity(object):
     def set_animation(self, sprite_path, frames):
         self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
         self.animation.total_frames = frames
-        self.animation.set_total_duration(frames * globals.FRAME_SPEED)
+        self.animation.set_total_duration(frames * gvar.FRAME_SPEED)
 
     def set_position(self, x, y):
         self.animation.set_position(x, y)
