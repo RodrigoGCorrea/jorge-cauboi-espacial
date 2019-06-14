@@ -46,8 +46,8 @@ def run():
             player.set_animation("./src/assets/actors/jorge/running_right.png", 8)
         elif player.direction["left"]:
             player.set_animation("./src/assets/actors/jorge/running_left.png", 8)
-    
-    print(player.state, player.direction, player.velocity)
+
+    print(window.delta_time(), player.state, player.direction, player.velocity)
 
     player.update()
     player.render()

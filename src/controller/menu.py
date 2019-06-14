@@ -2,42 +2,32 @@ from library.PPlay.mouse import Mouse
 from library.PPlay.animation import Animation
 
 from environment import variables as gvar
+from environment.instances import window, mouse
 
-mouse = Mouse()
+
+play_button = Animation("./src/assets/menu/play.png", 2)
+play_button.set_position(
+    gvar.WIDTH / 2 - play_button.width / 2, gvar.HEIGHT / 2 - play_button.height / 2
+)
 
 
-class Menu(object):
-    def __init__(self, window):
-        self.window = window
-        self.play_button = Animation("./src/assets/menu/play.png", 2)
-        self.__set_pos()
+def run():
+    if mouse.is_over_object(play_button):
+        play_button.set_curr_frame(1)
+        if mouse.is_button_pressed(1):
+            gvar.STATE = 1
+    else:
+        play_button.set_curr_frame(0)
 
-    def run(self):
-        self.window.set_background_color((0, 0, 0))
-        self.__draw()
-        self.start_game()
+    window.set_background_color((0, 0, 0))
 
-    def __draw(self):
-        self.window.draw_text(
-            "Jorge The Space Cowboy",
-            gvar.WIDTH / 2,
-            gvar.HEIGHT / 2 - 220,
-            "./src/assets/fonts/pixel.ttf",
-            50,
-            (255, 255, 255),
-        )
-        self.play_button.draw()
+    window.draw_text(
+        "Jorge The Space Cowboy",
+        gvar.WIDTH / 2,
+        gvar.HEIGHT / 2 - 220,
+        "./src/assets/fonts/pixel.ttf",
+        50,
+        (255, 255, 255),
+    )
 
-    def start_game(self):
-        if mouse.is_over_object(self.play_button):
-            self.play_button.set_curr_frame(1)
-            if mouse.is_button_pressed(1):
-                gvar.STATE = 1
-        else:
-            self.play_button.set_curr_frame(0)
-
-    def __set_pos(self):
-        self.play_button.set_position(
-            gvar.WIDTH / 2 - self.play_button.width / 2,
-            gvar.HEIGHT / 2 - self.play_button.height / 2,
-        )
+    play_button.draw()
