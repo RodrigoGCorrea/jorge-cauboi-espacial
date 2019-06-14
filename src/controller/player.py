@@ -17,7 +17,7 @@ vel_up = math.Vector2(0, -gvar.VELOCITY_PLAYER)
 def run():
     # DEFAULT
     player.set_state("idle")
-    vel_vector = [0, 0]
+    vel_vector = math.Vector2(0, 0)
 
     # CHECKING COLLISION
     if player.animation.x <= 1:
@@ -61,7 +61,7 @@ def run():
         and keyboard.key_pressed("left") == False
         and player.colliding["right"] == False
     ):
-        vel_vector[0] = gvar.VELOCITY_PLAYER
+        vel_vector.x = 1
         player.set_direction("right")
         player.set_state("running")
     elif (
@@ -69,7 +69,7 @@ def run():
         and keyboard.key_pressed("right") == False
         and player.colliding["left"] == False
     ):
-        vel_vector[0] = -gvar.VELOCITY_PLAYER
+        vel_vector.x = -1
         player.set_direction("left")
         player.set_state("running")
 
@@ -78,14 +78,14 @@ def run():
         and keyboard.key_pressed("down") == False
         and player.colliding["up"] == False
     ):
-        vel_vector[1] = -gvar.VELOCITY_PLAYER
+        vel_vector.y = -1
         player.set_state("running")
     elif (
         keyboard.key_pressed("down") == True
         and keyboard.key_pressed("up") == False
         and player.colliding["down"] == False
     ):
-        vel_vector[1] = gvar.VELOCITY_PLAYER
+        vel_vector.y = 1
         player.set_state("running")
 
     # ANIMATION
@@ -109,14 +109,10 @@ def run():
         elif player.direction["left"]:
             player.set_animation("./src/assets/actors/jorge/idle_left.png", 8)
 
-    print(
-        window.delta_time(),
-        player.state,
-        player.direction,
-        player.velocity,
-        player.colliding,
-    )
-    vel_vector = math.Vector2(vel_vector[0], vel_vector[1])
+    if vel_vector != math.Vector2(0):
+        vel_vector.normalize_ip()
+    vel_vector *= gvar.VELOCITY_PLAYER
+    print(vel_vector)
     player.move(vel_vector)
     player.update()
     player.render()
