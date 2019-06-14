@@ -1,4 +1,4 @@
-from pygame.math import Vector2
+from pygame import math
 
 from library.PPlay.animation import Animation
 from library.PPlay.gameimage import load_image
@@ -14,9 +14,10 @@ class Entity(object):
 
         self.colliding = {"left": False, "right": False, "top": False, "bottom": False}
 
-        self.velocity = Vector2(0, 0)
+        self.velocity = math.Vector2(0, 0)
 
         self.direction = {"left": False, "right": True}
+        self.state = {"idle": True, "running": False}
 
     def update(self):
         self.animation.x += self.velocity.x * self.window.delta_time()
@@ -37,9 +38,16 @@ class Entity(object):
     def set_position(self, x, y):
         self.animation.set_position(x, y)
 
-    def flip_direction(self):
-        for key, value in self.direction.items():
-            if value == True:
-                self.direction[key] = False
-            else:
+    def set_direction(self, direction):
+        for key, _ in self.direction.items():
+            if key == direction:
                 self.direction[key] = True
+            else:
+                self.direction[key] = False
+
+    def set_state(self, state):
+        for key, _ in self.state.items():
+            if key == state:
+                self.state[key] = True
+            else:
+                self.state[key] = False
