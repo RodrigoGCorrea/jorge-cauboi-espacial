@@ -13,13 +13,20 @@ def run():
     # SPAWN
     if len(enemy_mtx) == 0:
         level = randint(1, 3)
+        enemy_type = randint(1, 5)
         level_constructor = open("./src/assets/levels/level" + str(level) + ".txt", "r")
         line = level_constructor.readline()
         lin = 0
         while lin < 17:
             for col in range(len(line)):
                 if line[col] == "1":
-                    enemy = Entity(window, "./src/assets/actors/enemies/enemy.png", 1)
+                    enemy = Entity(
+                        window,
+                        "./src/assets/actors/enemies/minion{}/running_right.png".format(
+                            enemy_type
+                        ),
+                        8,
+                    )
                     enemy.set_position(
                         col * (gvar.WIDTH / 22)
                         + (gvar.WIDTH / 22) / 2
