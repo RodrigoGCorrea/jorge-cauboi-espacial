@@ -35,25 +35,13 @@ def run():
         player.set_position(player.animation.x, player.animation.y - 1)
 
     # RESET COLLISION
-    if (
-        player.colliding["left"] == True
-        and keyboard.key_pressed("right")
-    ):
+    if player.colliding["left"] == True and keyboard.key_pressed("right"):
         player.colliding["left"] = False
-    if (
-        player.colliding["right"] == True
-        and keyboard.key_pressed("left")
-    ):
+    if player.colliding["right"] == True and keyboard.key_pressed("left"):
         player.colliding["right"] = False
-    if (
-        player.colliding["up"] == True
-        and keyboard.key_pressed("down")
-    ):
+    if player.colliding["up"] == True and keyboard.key_pressed("down"):
         player.colliding["up"] = False
-    if (
-        player.colliding["down"] == True
-        and keyboard.key_pressed("up")
-    ):
+    if player.colliding["down"] == True and keyboard.key_pressed("up"):
         player.colliding["down"] = False
     # MOVING
     if (
@@ -97,11 +85,9 @@ def run():
             player.set_animation("./src/assets/actors/jorge/idle_left.png", 8)
     elif player.state["running"]:
         if player.direction["right"]:
-            player.set_animation(
-                "./src/assets/actors/jorge/running_right.png", 8)
+            player.set_animation("./src/assets/actors/jorge/running_right.png", 8)
         elif player.direction["left"]:
-            player.set_animation(
-                "./src/assets/actors/jorge/running_left.png", 8)
+            player.set_animation("./src/assets/actors/jorge/running_left.png", 8)
 
     else:
         if player.direction["right"]:
