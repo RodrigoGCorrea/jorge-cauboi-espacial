@@ -1,5 +1,5 @@
 from library.PPlay.mouse import Mouse
-from library.PPlay.sprite import Sprite
+from library.PPlay.animation import Animation
 
 import globals
 
@@ -9,7 +9,7 @@ mouse = Mouse()
 class Menu(object):
     def __init__(self, window):
         self.window = window
-        self.play_button = Sprite("./src/assets/play.png")
+        self.play_button = Animation("./src/assets/menu/play.png", 2)
         self.__set_pos()
 
     def run(self):
@@ -22,15 +22,19 @@ class Menu(object):
             "Jorge The Space Cowboy",
             globals.WIDTH / 2,
             globals.HEIGHT / 2 - 220,
-            "./src/assets/pixel.ttf",
-            40,
+            "./src/assets/fonts/pixel.ttf",
+            50,
             (255, 255, 255),
         )
         self.play_button.draw()
 
     def start_game(self):
-        if mouse.is_over_object(self.play_button) and mouse.is_button_pressed(1):
-            globals.STATE = 1
+        if mouse.is_over_object(self.play_button):
+            self.play_button.set_curr_frame(1)
+            if mouse.is_button_pressed(1):
+                globals.STATE = 1
+        else:
+            self.play_button.set_curr_frame(0)
 
     def __set_pos(self):
         self.play_button.set_position(
