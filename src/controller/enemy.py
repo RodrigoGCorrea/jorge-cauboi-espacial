@@ -1,14 +1,14 @@
 from random import randint
-from pygame import math
 
 from environment import variables as gvar
-from environment.instances import window, keyboard
+from environment.instances import window
 from classes.entity import Entity
 
 enemy_mtx = []
 
 
 def run():
+    global enemy_mtx
 
     # SPAWN
     if len(enemy_mtx) == 0:

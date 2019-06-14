@@ -7,17 +7,16 @@ from classes.entity import Entity
 player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
 player.set_position(10, window.height / 2)
 
-vel_stop = math.Vector2(0)
-vel_right = math.Vector2(gvar.VELOCITY_PLAYER, 0)
-vel_left = math.Vector2(-gvar.VELOCITY_PLAYER, 0)
-vel_down = math.Vector2(0, gvar.VELOCITY_PLAYER)
-vel_up = math.Vector2(0, -gvar.VELOCITY_PLAYER)
+vel_vector = math.Vector2(0, 0)
 
 
 def run():
+    global vel_vector
+    global player
+
     # DEFAULT
     player.set_state("idle")
-    vel_vector = math.Vector2(0, 0)
+    vel_vector.update(0, 0)
 
     # CHECKING COLLISION
     if player.animation.x <= 1:
@@ -98,7 +97,9 @@ def run():
     if vel_vector != math.Vector2(0):
         vel_vector.normalize_ip()
     vel_vector *= gvar.VELOCITY_PLAYER
+
     print(vel_vector)
+
     player.move(vel_vector)
     player.update()
     player.render()

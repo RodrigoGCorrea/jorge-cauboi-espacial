@@ -1,4 +1,3 @@
-from library.PPlay.mouse import Mouse
 from library.PPlay.animation import Animation
 
 from environment import variables as gvar
@@ -12,6 +11,8 @@ play_button.set_position(
 
 
 def run():
+    global play_button
+
     if mouse.is_over_object(play_button):
         play_button.set_curr_frame(1)
         if mouse.is_button_pressed(1):
