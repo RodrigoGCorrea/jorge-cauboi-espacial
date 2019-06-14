@@ -17,7 +17,12 @@ class Entity(object):
 
         self.direction = {"left": False, "right": True}
         self.state = {"idle": True, "running": False}
-        self.colliding = False
+        self.colliding = {
+            "left": False,
+            "right": False,
+            "up": False,
+            "down": False
+        }
 
     def update(self):
         self.animation.x += self.velocity.x * self.window.delta_time()
@@ -31,7 +36,8 @@ class Entity(object):
         self.velocity = vector
 
     def set_animation(self, sprite_path, frames):
-        self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
+        self.animation.image, self.animation.rect = load_image(
+            sprite_path, alpha=True)
         self.animation.total_frames = frames
         self.animation.set_total_duration(frames * gvar.FRAME_SPEED)
 
@@ -52,5 +58,5 @@ class Entity(object):
             else:
                 self.state[key] = False
 
-    def set_colliding(self, bool):
-        self.colliding = bool
+    def set_colliding(self, bool, direction):
+        self.colliding[direction] = bool
