@@ -26,9 +26,9 @@ class Player(Entity):
             and globals.CAMERA_MOVING == False
             or self.jumping
         ):
-            self.set_animation("./src/assets/jorge/jorge_idle.png", 8)
+            self.set_animation("./src/assets/actors/jorge/idle.png", 8)
         else:
-            self.set_animation("./src/assets/jorge/jorge_running.png", 8)
+            self.set_animation("./src/assets/actors/jorge/running.png", 8)
 
         if self.direction["left"]:
             self.animation.image = flip(self.animation.image, True, False)

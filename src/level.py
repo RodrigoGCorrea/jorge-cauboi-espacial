@@ -5,7 +5,7 @@ class Level(object):
     def __init__(self, window, level_path):
         self.obstacles = []
         self.window = window
-        self.__setup(level_path)
+        #self.__setup(level_path)
 
     def update(self):
         pass
