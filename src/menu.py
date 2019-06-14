@@ -23,7 +23,7 @@ class Menu(object):
             globals.WIDTH / 2,
             globals.HEIGHT / 2 - 220,
             "./src/assets/fonts/pixel.ttf",
-            40,
+            50,
             (255, 255, 255),
         )
         self.play_button.draw()
