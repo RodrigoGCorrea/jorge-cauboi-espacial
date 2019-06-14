@@ -15,7 +15,7 @@ class Game(object):
         self.window.set_title("JSC")
 
         self.level = Level(self.window, "./src/levels/level.txt")
-        self.jorge = Player(self.window, "./src/assets/jorge_idle.png", 8)
+        self.jorge = Player(self.window, "./src/assets/jorge/jorge_idle.png", 8)
         self.background = Sprite("./src/assets/space.png")
         self.menu = Menu(self.window)
         self.camera = Camera(self.window)

@@ -26,7 +26,7 @@ class Level(object):
         while lin <= 29:
             for col in range(len(line)):
                 if line[col] == "1":
-                    tile = Sprite("./src/assets/floor.png")
+                    tile = Sprite("./src/assets/tileset/floor.png")
                     tile.set_position(col * (tile.width - 2), lin * (tile.height - 2))
                     self.obstacles.append(tile)
             line = level_constructor.readline()
