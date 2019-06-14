@@ -7,6 +7,7 @@ from controller import player
 
 background = Sprite("./src/assets/tileset/background.png")
 
+
 def run():
     if keyboard.key_pressed("esc"):
         gvar.STATE = 0

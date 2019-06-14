@@ -13,12 +13,11 @@ class Entity(object):
         self.animation.set_sequence_time(0, frames, gvar.FRAME_SPEED)
         self.animation.play()
 
-        self.colliding = {"left": False, "right": False, "top": False, "bottom": False}
-
         self.velocity = math.Vector2(0, 0)
 
         self.direction = {"left": False, "right": True}
         self.state = {"idle": True, "running": False}
+        self.colliding = False
 
     def update(self):
         self.animation.x += self.velocity.x * self.window.delta_time()
@@ -52,3 +51,6 @@ class Entity(object):
                 self.state[key] = True
             else:
                 self.state[key] = False
+
+    def set_colliding(self, bool):
+        self.colliding = bool
