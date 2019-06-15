@@ -1,4 +1,5 @@
 from pygame import math
+from pygame.sprite import Sprite
 
 from library.PPlay.animation import Animation
 from library.PPlay.gameimage import load_image
@@ -6,7 +7,7 @@ from library.PPlay.gameimage import load_image
 from environment import variables as gvar
 
 
-class Entity(object):
+class Entity(Sprite):
     def __init__(self, window, sprite_path, frames):
         self.window = window
         self.animation = Animation(sprite_path, frames)
@@ -17,7 +18,8 @@ class Entity(object):
 
         self.direction = {"left": False, "right": True}
         self.state = {"idle": True, "running": False}
-        self.colliding = {"left": False, "right": False, "up": False, "down": False}
+        self.colliding = {"left": False,
+                          "right": False, "up": False, "down": False}
 
     def update(self):
         self.animation.x += self.velocity.x * self.window.delta_time()
@@ -30,8 +32,12 @@ class Entity(object):
     def move(self, vector):
         self.velocity = vector
 
+    def distance_to(self, object):
+        return (((self.animation.x + self.animation.width/2 - (object.animation.x + object.animation.width/2))**2 + (self.animation.y + self.animation.height/2 - (object.animation.y + object.animation.height/2))**2)**1/2)
+
     def set_animation(self, sprite_path, frames):
-        self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
+        self.animation.image, self.animation.rect = load_image(
+            sprite_path, alpha=True)
         self.animation.total_frames = frames
         self.animation.set_total_duration(frames * gvar.FRAME_SPEED)
 

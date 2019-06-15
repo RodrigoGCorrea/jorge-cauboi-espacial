@@ -84,9 +84,11 @@ def run():
             player.set_animation("./src/assets/actors/jorge/idle_left.png", 8)
     elif player.state["running"]:
         if player.direction["right"]:
-            player.set_animation("./src/assets/actors/jorge/running_right.png", 8)
+            player.set_animation(
+                "./src/assets/actors/jorge/running_right.png", 8)
         elif player.direction["left"]:
-            player.set_animation("./src/assets/actors/jorge/running_left.png", 8)
+            player.set_animation(
+                "./src/assets/actors/jorge/running_left.png", 8)
 
     else:
         if player.direction["right"]:
@@ -97,8 +99,6 @@ def run():
     if vel_vector != math.Vector2(0):
         vel_vector.normalize_ip()
     vel_vector *= gvar.VELOCITY_PLAYER
-
-    print(vel_vector)
 
     player.move(vel_vector)
     player.update()

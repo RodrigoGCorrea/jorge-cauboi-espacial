@@ -1,8 +1,11 @@
 from random import randint
+from pygame import math
 
 from environment import variables as gvar
 from environment.instances import window
 from classes.entity import Entity
+
+from .player import player
 
 enemy_mtx = []
 
@@ -14,7 +17,8 @@ def run():
     if len(enemy_mtx) == 0:
         level = randint(1, 3)
         enemy_type = randint(1, 5)
-        level_constructor = open("./src/assets/levels/level" + str(level) + ".txt", "r")
+        level_constructor = open(
+            "./src/assets/levels/level" + str(level) + ".txt", "r")
         line = level_constructor.readline()
         lin = 0
         while lin < 17:
@@ -38,7 +42,23 @@ def run():
                     enemy_mtx.append(enemy)
             line = level_constructor.readline()
             lin += 1
+    # MOVEMENT
+    for enemy in enemy_mtx:
+        enemy_direction = math.Vector2(
+            player.animation.x - enemy.animation.x, player.animation.y - enemy.animation.y)
+        enemy_direction.normalize_ip()
+        enemy_direction *= gvar.ENEMY_VELOCITY
+        enemy.move(enemy_direction)
+    # COLISSION
+    for enemy1 in range(len(enemy_mtx)):
+        for enemy2 in range(enemy1 + 1, len(enemy_mtx)):
+            if enemy_mtx[enemy1].animation.collided(enemy_mtx[enemy2].animation):
+                if enemy_mtx[enemy1].distance_to(player) < enemy_mtx[enemy2].distance_to(player):
+                    enemy_mtx[enemy2].move(math.Vector2(0))
+                else:
+                    enemy_mtx[enemy1].move(math.Vector2(0))
 
     # DRAW
     for enemy in enemy_mtx:
+        enemy.update()
         enemy.render()
