@@ -54,9 +54,15 @@ def run():
         for enemy2 in range(enemy1 + 1, len(enemy_mtx)):
             if enemy_mtx[enemy1].animation.collided(enemy_mtx[enemy2].animation):
                 if enemy_mtx[enemy1].distance_to(player) < enemy_mtx[enemy2].distance_to(player):
-                    enemy_mtx[enemy2].move(math.Vector2(0))
+                    new_vel_length = enemy_mtx[enemy2].velocity.length() - 30
+                    enemy_mtx[enemy2].velocity.normalize_ip()
+                    enemy_mtx[enemy2].velocity *= new_vel_length
+                    enemy_mtx[enemy2].move(enemy_mtx[enemy2].velocity)
                 else:
-                    enemy_mtx[enemy1].move(math.Vector2(0))
+                    new_vel_length = enemy_mtx[enemy1].velocity.length() - 30
+                    enemy_mtx[enemy1].velocity.normalize_ip()
+                    enemy_mtx[enemy1].velocity *= new_vel_length
+                    enemy_mtx[enemy1].move(enemy_mtx[enemy1].velocity)
 
     # DRAW
     for enemy in enemy_mtx:
