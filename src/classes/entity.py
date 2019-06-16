@@ -1,10 +1,8 @@
-from pygame import math
-from pygame.sprite import Sprite
-
-from library.PPlay.animation import Animation
-from library.PPlay.gameimage import load_image
-
 from environment import variables as gvar
+from library.PPlay.gameimage import load_image
+from library.PPlay.animation import Animation
+from pygame.sprite import Sprite
+from pygame import math
 
 
 class Entity(Sprite):
@@ -20,6 +18,9 @@ class Entity(Sprite):
         self.state = {"idle": True, "running": False}
         self.colliding = {"left": False,
                           "right": False, "up": False, "down": False}
+
+        self.life = 100
+        self.strenght = 50
 
     def update(self):
         self.animation.x += self.velocity.x * self.window.delta_time()
@@ -60,3 +61,11 @@ class Entity(Sprite):
 
     def set_colliding(self, bool, direction):
         self.colliding[direction] = bool
+
+    def shoot(self, bullet_path, bullet_frames, bullet_vel):
+        bullet = Entity(
+            self.window, bullet_path, bullet_frames)
+        bullet.set_position(self.animation.x + self.animation.width/2,
+                            self.animation.y + self.animation.height/2)
+        bullet.velocity = bullet_vel
+        return bullet

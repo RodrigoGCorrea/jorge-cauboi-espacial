@@ -3,7 +3,7 @@ from library.PPlay.sprite import Sprite
 from environment import variables as gvar
 from environment.instances import keyboard, window
 
-from controller import player, enemy
+from controller import player, enemy, bullet
 
 background = Sprite("./src/assets/tileset/background.png")
 
@@ -16,3 +16,4 @@ def run():
     background.draw()
     player.run()
     enemy.run()
+    bullet.run()
