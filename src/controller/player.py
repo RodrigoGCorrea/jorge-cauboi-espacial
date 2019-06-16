@@ -34,26 +34,26 @@ def run():
         player.set_position(player.animation.x, player.animation.y - 1)
 
     # RESET COLLISION
-    if player.colliding["left"] == True and keyboard.key_pressed("right"):
+    if player.colliding["left"] == True and keyboard.key_pressed("d"):
         player.colliding["left"] = False
-    if player.colliding["right"] == True and keyboard.key_pressed("left"):
+    if player.colliding["right"] == True and keyboard.key_pressed("a"):
         player.colliding["right"] = False
-    if player.colliding["up"] == True and keyboard.key_pressed("down"):
+    if player.colliding["up"] == True and keyboard.key_pressed("s"):
         player.colliding["up"] = False
-    if player.colliding["down"] == True and keyboard.key_pressed("up"):
+    if player.colliding["down"] == True and keyboard.key_pressed("w"):
         player.colliding["down"] = False
     # MOVING
     if (
-        keyboard.key_pressed("right") == True
-        and keyboard.key_pressed("left") == False
+        keyboard.key_pressed("d") == True
+        and keyboard.key_pressed("a") == False
         and player.colliding["right"] == False
     ):
         vel_vector.x = 1
         player.set_direction("right")
         player.set_state("running")
     elif (
-        keyboard.key_pressed("left") == True
-        and keyboard.key_pressed("right") == False
+        keyboard.key_pressed("a") == True
+        and keyboard.key_pressed("d") == False
         and player.colliding["left"] == False
     ):
         vel_vector.x = -1
@@ -61,15 +61,15 @@ def run():
         player.set_state("running")
 
     if (
-        keyboard.key_pressed("up") == True
-        and keyboard.key_pressed("down") == False
+        keyboard.key_pressed("w") == True
+        and keyboard.key_pressed("s") == False
         and player.colliding["up"] == False
     ):
         vel_vector.y = -1
         player.set_state("running")
     elif (
-        keyboard.key_pressed("down") == True
-        and keyboard.key_pressed("up") == False
+        keyboard.key_pressed("s") == True
+        and keyboard.key_pressed("w") == False
         and player.colliding["down"] == False
     ):
         vel_vector.y = 1

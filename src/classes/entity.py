@@ -3,6 +3,7 @@ from library.PPlay.gameimage import load_image
 from library.PPlay.animation import Animation
 from pygame.sprite import Sprite
 from pygame import math
+from pygame.transform import rotate
 
 
 class Entity(Sprite):
@@ -68,4 +69,9 @@ class Entity(Sprite):
         bullet.set_position(self.animation.x + self.animation.width/2,
                             self.animation.y + self.animation.height/2)
         bullet.velocity = bullet_vel
+        angle = bullet_vel.angle_to(math.Vector2(1, 0))
+        bullet.animation.image = rotate(bullet.animation.image, angle)
         return bullet
+
+    def collide(self, object):
+        return self.animation.collided(object.animation)
