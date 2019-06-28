@@ -8,10 +8,11 @@ from classes.entity import Entity
 from .player import player
 
 enemy_mtx = []
-
+wave = 0
 
 def run():
     global enemy_mtx
+    global wave
 
     # SPAWN
     if len(enemy_mtx) == 0:
@@ -42,6 +43,7 @@ def run():
                     enemy_mtx.append(enemy)
             line = level_constructor.readline()
             lin += 1
+        wave += 1
     # MOVEMENT
     for enemy in enemy_mtx:
         enemy_direction = math.Vector2(
@@ -49,6 +51,7 @@ def run():
         enemy_direction.normalize_ip()
         enemy_direction *= gvar.ENEMY_VELOCITY
         enemy.move(enemy_direction)
+
     # COLISSION
     for enemy1 in range(len(enemy_mtx)):
         for enemy2 in range(enemy1 + 1, len(enemy_mtx)):

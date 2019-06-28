@@ -4,6 +4,7 @@ from environment import variables as gvar
 from environment.instances import keyboard, window
 
 from controller import player, enemy, bullet
+from screen import hud
 
 background = Sprite("./src/assets/tileset/background.png")
 
@@ -17,3 +18,4 @@ def run():
     player.run()
     enemy.run()
     bullet.run()
+    hud.run()
