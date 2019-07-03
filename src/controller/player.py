@@ -17,7 +17,6 @@ def run():
     # DEFAULT
     player.set_state("idle")
     vel_vector.update(0, 0)
-    print(player.life)
 
     # CHECKING COLLISION
     if player.animation.x <= 1:
@@ -81,18 +80,20 @@ def run():
     from .enemy import enemy_mtx
 
     for enemy in enemy_mtx:
-        if player.collide(enemy) and player.damage_taken == False:
+        if player.collide(enemy) and player.staggered == False:
             player.damage(enemy.strenght)
+            player.staggered = True
 
     # RESET COLLISION WITH ENEMY
-    if player.damage_taken:
-        player.damage_cooldown -= gvar.DAMAGE_COOLDOWN
+    if player.staggered:
+        player.damage_cooldown -= window.delta_time() * 1000
         if player.damage_cooldown <= 0:
-            player.damage_cooldown = 100
-            player.damage_taken = False
+            player.damage_cooldown = gvar.DAMAGE_COOLDOWN
+            player.staggered = False
+    
+    print(player.damage_cooldown)
 
     # ANIMATION
-
     if player.state["idle"]:
         if player.direction["right"]:
             player.set_animation("./src/assets/actors/jorge/idle_right.png", 8)
@@ -110,9 +111,22 @@ def run():
         elif player.direction["left"]:
             player.set_animation("./src/assets/actors/jorge/idle_left.png", 8)
 
+    if player.staggered:
+        if player.direction["right"]:
+            player.set_animation("./src/assets/actors/jorge/staggered_right.png", 8)
+            vel_vector.x = -1
+            vel_vector.y = 0 
+            player.move(vel_vector)
+        elif player.direction["left"]:
+            player.set_animation("./src/assets/actors/jorge/staggered_left.png", 8)
+            vel_vector.x = 1
+            vel_vector.y = 0 
+            player.move(vel_vector)
+
     if vel_vector != math.Vector2(0):
         vel_vector.normalize_ip()
     vel_vector *= gvar.VELOCITY_PLAYER
+
 
     player.move(vel_vector)
     player.update()

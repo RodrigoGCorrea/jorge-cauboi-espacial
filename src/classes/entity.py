@@ -18,9 +18,9 @@ class Entity(Sprite):
         self.direction = {"left": False, "right": True}
         self.state = {"idle": True, "running": False}
         self.colliding = {"left": False, "right": False, "up": False, "down": False}
+        self.staggered = False
 
-        self.damage_cooldown = 100
-        self.damage_taken = False
+        self.damage_cooldown = gvar.DAMAGE_COOLDOWN
 
         self.life = 100
         self.strenght = 50

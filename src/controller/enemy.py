@@ -10,10 +10,13 @@ from .player import player
 enemy_mtx = []
 wave = 0
 
+enemy_type = 0
+
 
 def run():
     global enemy_mtx
     global wave
+    global enemy_type
 
     # SPAWN
     if len(enemy_mtx) == 0:
@@ -54,6 +57,7 @@ def run():
         enemy_direction.normalize_ip()
         enemy_direction *= gvar.ENEMY_VELOCITY
         enemy.move(enemy_direction)
+
 
     # COLISSION
     for enemy1 in range(len(enemy_mtx)):
