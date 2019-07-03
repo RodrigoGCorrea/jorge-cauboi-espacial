@@ -79,6 +79,7 @@ def run():
 
     # COLLISION WITH ENEMY
     from .enemy import enemy_mtx
+
     for enemy in enemy_mtx:
         if player.collide(enemy) and player.damage_taken == False:
             player.damage(enemy.strenght)
@@ -99,11 +100,9 @@ def run():
             player.set_animation("./src/assets/actors/jorge/idle_left.png", 8)
     elif player.state["running"]:
         if player.direction["right"]:
-            player.set_animation(
-                "./src/assets/actors/jorge/running_right.png", 8)
+            player.set_animation("./src/assets/actors/jorge/running_right.png", 8)
         elif player.direction["left"]:
-            player.set_animation(
-                "./src/assets/actors/jorge/running_left.png", 8)
+            player.set_animation("./src/assets/actors/jorge/running_left.png", 8)
 
     else:
         if player.direction["right"]:

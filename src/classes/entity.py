@@ -17,8 +17,7 @@ class Entity(Sprite):
 
         self.direction = {"left": False, "right": True}
         self.state = {"idle": True, "running": False}
-        self.colliding = {"left": False,
-                          "right": False, "up": False, "down": False}
+        self.colliding = {"left": False, "right": False, "up": False, "down": False}
 
         self.damage_cooldown = 100
         self.damage_taken = False
@@ -38,11 +37,23 @@ class Entity(Sprite):
         self.velocity = vector
 
     def distance_to(self, object):
-        return (((self.animation.x + self.animation.width/2 - (object.animation.x + object.animation.width/2))**2 + (self.animation.y + self.animation.height/2 - (object.animation.y + object.animation.height/2))**2)**1/2)
+        return (
+            (
+                self.animation.x
+                + self.animation.width / 2
+                - (object.animation.x + object.animation.width / 2)
+            )
+            ** 2
+            + (
+                self.animation.y
+                + self.animation.height / 2
+                - (object.animation.y + object.animation.height / 2)
+            )
+            ** 2
+        ) ** 1 / 2
 
     def set_animation(self, sprite_path, frames):
-        self.animation.image, self.animation.rect = load_image(
-            sprite_path, alpha=True)
+        self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
         self.animation.total_frames = frames
         self.animation.set_total_duration(frames * gvar.FRAME_SPEED)
 
@@ -67,10 +78,11 @@ class Entity(Sprite):
         self.colliding[direction] = bool
 
     def shoot(self, bullet_path, bullet_frames, bullet_vel):
-        bullet = Entity(
-            self.window, bullet_path, bullet_frames)
-        bullet.set_position(self.animation.x + self.animation.width/2,
-                            self.animation.y + self.animation.height/2)
+        bullet = Entity(self.window, bullet_path, bullet_frames)
+        bullet.set_position(
+            self.animation.x + self.animation.width / 2,
+            self.animation.y + self.animation.height / 2,
+        )
         bullet.velocity = bullet_vel
         angle = bullet_vel.angle_to(math.Vector2(1, 0))
         bullet.animation.image = rotate(bullet.animation.image, angle)
