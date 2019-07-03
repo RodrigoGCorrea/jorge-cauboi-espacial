@@ -17,6 +17,7 @@ def run():
     # DEFAULT
     player.set_state("idle")
     vel_vector.update(0, 0)
+    print(player.life)
 
     # CHECKING COLLISION
     if player.animation.x <= 1:
@@ -42,6 +43,7 @@ def run():
         player.colliding["up"] = False
     if player.colliding["down"] == True and keyboard.key_pressed("w"):
         player.colliding["down"] = False
+
     # MOVING
     if (
         keyboard.key_pressed("d") == True
@@ -74,6 +76,19 @@ def run():
     ):
         vel_vector.y = 1
         player.set_state("running")
+
+    # COLLISION WITH ENEMY
+    from .enemy import enemy_mtx
+    for enemy in enemy_mtx:
+        if player.collide(enemy) and player.damage_taken == False:
+            player.damage(enemy.strenght)
+
+    # RESET COLLISION WITH ENEMY
+    if player.damage_taken:
+        player.damage_cooldown -= gvar.DAMAGE_COOLDOWN
+        if player.damage_cooldown <= 0:
+            player.damage_cooldown = 100
+            player.damage_taken = False
 
     # ANIMATION
 

@@ -39,9 +39,11 @@ def run():
                         + (gvar.HEIGHT / 17) / 2
                         - enemy.animation.height,
                     )
+                    enemy.strenght = gvar.ENEMY_DAMAGE
                     enemy_mtx.append(enemy)
             line = level_constructor.readline()
             lin += 1
+
     # MOVEMENT
     for enemy in enemy_mtx:
         enemy_direction = math.Vector2(
@@ -49,6 +51,7 @@ def run():
         enemy_direction.normalize_ip()
         enemy_direction *= gvar.ENEMY_VELOCITY
         enemy.move(enemy_direction)
+
     # COLISSION
     for enemy1 in range(len(enemy_mtx)):
         for enemy2 in range(enemy1 + 1, len(enemy_mtx)):

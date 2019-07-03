@@ -20,6 +20,9 @@ class Entity(Sprite):
         self.colliding = {"left": False,
                           "right": False, "up": False, "down": False}
 
+        self.damage_cooldown = 100
+        self.damage_taken = False
+
         self.life = 100
         self.strenght = 50
 
@@ -75,3 +78,7 @@ class Entity(Sprite):
 
     def collide(self, object):
         return self.animation.collided(object.animation)
+
+    def damage(self, strenght):
+        self.life -= strenght
+        self.damage_taken = True

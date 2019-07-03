@@ -12,23 +12,23 @@ bullet_mtx = []
 
 bullet_vel = math.Vector2(0)
 player_can_shoot = True
-player_cooldown = gvar.PLAYER_COOLDOWN
+bullet_cooldown = gvar.BULLET_COOLDOWN
 
 
 def run():
     global bullet_mtx
     global bullet_vel
     global player_can_shoot
-    global player_cooldown
+    global bullet_cooldown
 
     # DEFAULT
     bullet_vel.update(0)
     # PLAYER SHOOT
-    if player_can_shoot == False and player_cooldown >= 0:
-        player_cooldown -= 5
-    if player_cooldown <= 0:
+    if player_can_shoot == False and bullet_cooldown >= 0:
+        bullet_cooldown -= 5
+    if bullet_cooldown <= 0:
         player_can_shoot = True
-        player_cooldown = gvar.PLAYER_COOLDOWN
+        bullet_cooldown = gvar.BULLET_COOLDOWN
 
     if keyboard.key_pressed("left") and keyboard.key_pressed("right") == False and player_can_shoot == True:
         bullet_vel.x = -1
@@ -55,6 +55,7 @@ def run():
                 bullet_mtx.remove(bullet)
                 if enemy.life <= 0:
                     enemy_mtx.remove(enemy)
+
     # DRAW
     if len(bullet_mtx) != 0:
         for bullet in bullet_mtx:
