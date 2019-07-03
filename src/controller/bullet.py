@@ -55,6 +55,13 @@ def run():
                 bullet_mtx.remove(bullet)
                 if enemy.life <= 0:
                     enemy_mtx.remove(enemy)
+<<<<<<< HEAD
+=======
+    # DESTROY BULLET
+    for bullet in bullet_mtx:
+        if bullet.animation.x >= gvar.WIDTH or bullet.animation.x <= 0 or bullet.animation.y >= gvar.HEIGHT or bullet.animation.y <= 48:
+            bullet_mtx.remove(bullet)
+>>>>>>> dccfa1386b7c88eb3c5de5dd2d5e0d4815fdd083
 
     # DRAW
     if len(bullet_mtx) != 0:
