@@ -44,7 +44,6 @@ def run():
         if mouse.is_button_pressed(1) and gvar.SCORE > cost_strength():
             gvar.SCORE -= cost_strength()
             player.strenght = update_strenght()
-            print("dale", gvar.SCORE, player.strenght)
             window.delay(150)
     else:
         power.set_curr_frame(0)
@@ -55,7 +54,6 @@ def run():
         if mouse.is_button_pressed(1) and gvar.SCORE > cost_life():
             gvar.SCORE -= cost_life()
             player.max_life += update_life()
-            print("dale vida")
             window.delay(150)
     else:
         life.set_curr_frame(0)
@@ -66,7 +64,6 @@ def run():
         if mouse.is_button_pressed(1) and gvar.SCORE > cost_heal():
             gvar.SCORE -= cost_heal()
             heal_player(player)
-            print("dale heal")
             window.delay(150)
     else:
         heal.set_curr_frame(0)
