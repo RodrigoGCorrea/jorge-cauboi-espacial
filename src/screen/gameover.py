@@ -5,7 +5,6 @@ from classes.database import Database
 from environment import variables as gvar
 from environment.instances import keyboard, window, mouse
 
-
 title = Animation("./src/assets/menu/gameover_title.png", 9)
 title.set_position(gvar.WIDTH / 2 - title.width / 2, gvar.HEIGHT / 2 - title.height / 2)
 title.set_sequence_time(0, 9, 100)
@@ -21,6 +20,7 @@ def run():
         title.update()
     else:
         animation_completed = True
+        title.set_curr_frame(0)
 
     window.set_background_color((0, 0, 0))
     title.draw()

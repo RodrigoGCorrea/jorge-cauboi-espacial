@@ -19,7 +19,7 @@ def reset():
     global wave
     global enemy_type
 
-    enemy_mtx = []
+    enemy_mtx.clear()
     wave = 0
     enemy_type = 0
 
@@ -33,6 +33,7 @@ def run():
 
     # SPAWN
     if len(enemy_mtx) == 0:
+        wave += 1
         level = randint(1, 3)
         enemy_type = randint(1, 5)
         boss_type = randint(1, 2)
@@ -41,7 +42,7 @@ def run():
         lin = 0
         while lin < 17:
             for col in range(len(line)):
-                if line[col] == "1" or line[col] == "2":
+                if line[col] == "1" or (line[col] == "2" and wave % 3 == 0):
                     if line[col] == "1":
                         enemy = Entity(
                             window,
@@ -74,12 +75,10 @@ def run():
                         + (gvar.HEIGHT / 17) / 2
                         - enemy.animation.height,
                     )
-                    enemy.strenght = gvar.ENEMY_DAMAGE + wave
                     enemy_mtx.append(enemy)
 
             line = level_constructor.readline()
             lin += 1
-        wave += 1
 
     # MOVEMENT
     for enemy in enemy_mtx:
@@ -99,11 +98,15 @@ def run():
                     enemy2
                 ].distance_to(player):
                     new_vel_length = enemy_mtx[enemy2].velocity_vector.length() - 30
+                    if new_vel_length == 0:
+                        new_vel_length = 1
                     enemy_mtx[enemy2].velocity_vector.normalize_ip()
                     enemy_mtx[enemy2].velocity_vector *= new_vel_length
                     enemy_mtx[enemy2].move(enemy_mtx[enemy2].velocity_vector)
                 else:
                     new_vel_length = enemy_mtx[enemy1].velocity_vector.length() - 30
+                    if new_vel_length == 0:
+                        new_vel_length = 1
                     enemy_mtx[enemy1].velocity_vector.normalize_ip()
                     enemy_mtx[enemy1].velocity_vector *= new_vel_length
                     enemy_mtx[enemy1].move(enemy_mtx[enemy1].velocity_vector)
@@ -112,7 +115,6 @@ def run():
     for enemy in enemy_mtx:
         enemy.update()
         enemy.render()
-
 
 def get_velocity(x):
     if x <= 30:

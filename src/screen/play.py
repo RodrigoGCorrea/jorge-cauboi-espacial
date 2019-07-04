@@ -25,6 +25,14 @@ def run():
         gvar.STATE = 3
         window.delay(150)
 
+    # CHANGE LEVEL
+    if keyboard.key_pressed("y"):
+        enemy.enemy_mtx.clear()
+    
+    # DIE
+    if keyboard.key_pressed("u"):
+        player.player.life = -1
+
     background.draw()
     player.run()
     enemy.run()

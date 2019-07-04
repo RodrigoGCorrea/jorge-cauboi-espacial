@@ -1,4 +1,4 @@
-from math import exp
+from math import exp, ceil
 from pygame import math
 from copy import deepcopy
 
@@ -23,7 +23,7 @@ def reset():
     global bullet_cooldown
     global score
 
-    bullet_mtx = []
+    bullet_mtx.clear()
     bullet_vel = math.Vector2(0)
     player_can_shoot = True
     bullet_cooldown = gvar.BULLET_COOLDOWN
@@ -81,6 +81,7 @@ def run():
         player_can_shoot = False
 
     # BULLET COLLISION
+    from .enemy import wave
     for enemy in enemy_mtx:
         for bullet in bullet_mtx:
             if bullet.collide(enemy):
@@ -88,7 +89,7 @@ def run():
                 bullet_mtx.remove(bullet)
                 if enemy.life <= 0:
                     enemy_mtx.remove(enemy)
-                    score += 1
+                    score += get_score(wave)
     # DESTROY BULLET
     for bullet in bullet_mtx:
         if (
@@ -107,4 +108,7 @@ def run():
 
 
 def get_score(x):
-    pass
+    if x <= 30:
+        return ceil(0.85*exp(0.16*x))
+    else:
+        return 100
