@@ -127,16 +127,16 @@ def get_velocity(x):
 
 def get_strenght_minion(x):
     if x <= 30:
-        return int(0.89 * exp(0.12 * x))
+        return int(0.87 * exp(0.14 * x))
     else:
-        return 30
+        return 60
 
 
 def get_strenght_boss(x):
     if x <= 30:
-        return int(0.87 * exp(0.14 * x))
+        return int(0.85 * exp(0.16 * x))
     else:
-        return 60
+        return 110
 
 
 def get_life_boss(x):

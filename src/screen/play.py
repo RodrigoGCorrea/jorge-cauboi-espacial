@@ -33,6 +33,10 @@ def run():
     if keyboard.key_pressed("u"):
         player.player.life = -1
 
+    # SCORE
+    if keyboard.key_pressed("t"):
+        gvar.SCORE += 100
+
     background.draw()
     player.run()
     enemy.run()

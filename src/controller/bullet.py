@@ -87,7 +87,10 @@ def run():
                 bullet_mtx.remove(bullet)
                 if enemy.life <= 0:
                     enemy_mtx.remove(enemy)
-                    gvar.SCORE += get_score(wave)
+                    if enemy.is_boss:
+                        gvar.SCORE += 200
+                    else:
+                        gvar.SCORE += get_score(wave)
     # DESTROY BULLET
     for bullet in bullet_mtx:
         if (
@@ -106,7 +109,7 @@ def run():
 
 
 def get_score(x):
-    if x <= 30:
+    if x <= 25:
         return ceil(0.85 * exp(0.16 * x))
     else:
-        return 100
+        return 50
