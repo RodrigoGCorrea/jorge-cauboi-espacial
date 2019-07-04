@@ -3,7 +3,7 @@ from library.PPlay.sprite import Sprite
 from environment import variables as gvar
 from environment.instances import keyboard, window
 
-from controller import player, enemy, bullet
+from controller import player, enemy, bullet, atributes
 from screen import hud
 
 background = Sprite("./src/assets/tileset/background.png")
@@ -28,7 +28,7 @@ def run():
     # CHANGE LEVEL
     if keyboard.key_pressed("y"):
         enemy.enemy_mtx.clear()
-    
+
     # DIE
     if keyboard.key_pressed("u"):
         player.player.life = -1
@@ -44,3 +44,4 @@ def reset():
     player.reset()
     enemy.reset()
     bullet.reset()
+    atributes.reset()
