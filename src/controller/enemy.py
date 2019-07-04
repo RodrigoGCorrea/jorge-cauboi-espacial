@@ -8,10 +8,19 @@ from classes.entity import Entity
 from .player import player
 
 enemy_mtx = []
-wave = 0
-
 enemy_type = 0
 
+wave = 0
+
+def reset():
+    global enemy_mtx
+    global wave
+    global enemy_type
+    global score
+
+    enemy_mtx = []
+    wave = 0
+    enemy_type = 0
 
 def run():
     global enemy_mtx
@@ -43,19 +52,21 @@ def run():
                         + (gvar.HEIGHT / 17) / 2
                         - enemy.animation.height,
                     )
-                    enemy.strenght = gvar.ENEMY_DAMAGE
+                    enemy.strenght = gvar.ENEMY_DAMAGE + wave
                     enemy_mtx.append(enemy)
             line = level_constructor.readline()
             lin += 1
         wave += 1
+
     # MOVEMENT
     for enemy in enemy_mtx:
+        print(enemy.strenght)
         enemy_direction = math.Vector2(
             player.animation.x - enemy.animation.x,
             player.animation.y - enemy.animation.y,
         )
         enemy_direction.normalize_ip()
-        enemy_direction *= gvar.ENEMY_VELOCITY
+        enemy_direction *= gvar.ENEMY_VELOCITY + wave
         enemy.move(enemy_direction)
 
 

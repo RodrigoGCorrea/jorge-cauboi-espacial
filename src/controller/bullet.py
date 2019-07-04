@@ -9,10 +9,25 @@ from .player import player
 from .enemy import enemy_mtx
 
 bullet_mtx = []
-
 bullet_vel = math.Vector2(0)
 player_can_shoot = True
 bullet_cooldown = gvar.BULLET_COOLDOWN
+
+score = 0
+
+def reset():
+    global bullet_mtx
+    global bullet_vel
+    global player_can_shoot
+    global bullet_cooldown
+    global score
+
+    bullet_mtx = []
+    bullet_vel = math.Vector2(0)
+    player_can_shoot = True
+    bullet_cooldown = gvar.BULLET_COOLDOWN
+    score = 0
+
 
 
 def run():
@@ -20,6 +35,7 @@ def run():
     global bullet_vel
     global player_can_shoot
     global bullet_cooldown
+    global score
 
     # DEFAULT
     bullet_vel.update(0)
@@ -72,6 +88,7 @@ def run():
                 bullet_mtx.remove(bullet)
                 if enemy.life <= 0:
                     enemy_mtx.remove(enemy)
+                    score += 1
     # DESTROY BULLET
     for bullet in bullet_mtx:
         if (
