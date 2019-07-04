@@ -29,5 +29,5 @@ if __name__ == "__main__":
             rank.run()
 
         window.update()
-        window.clock.tick(120)
+        window.clock.tick(60)
         # print(window.clock.get_fps())
