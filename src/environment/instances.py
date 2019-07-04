@@ -5,7 +5,7 @@ from library.PPlay.mouse import Mouse
 from . import variables as gvar
 
 window = Window(gvar.WIDTH, gvar.HEIGHT)
-window.set_title("JSC 0.1.0 alpha")
+window.set_title("JSC 1.0.0")
 
 keyboard = Keyboard()
 
