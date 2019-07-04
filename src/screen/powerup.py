@@ -1,10 +1,11 @@
 from library.PPlay.animation import Animation
+from library.PPlay.sprite import Sprite
 
 from environment import variables as gvar
 from environment.instances import window, mouse, keyboard
 
 
-title = Animation("./src/assets/menu/powerup_title.png", 1)
+title = Sprite("./src/assets/menu/powerup_title.png")
 title.set_position(gvar.WIDTH / 2 - title.width / 2, 200 - title.height / 2)
 
 power_button = Animation("./src/assets/menu/power.png", 2)
@@ -16,6 +17,7 @@ life_button = Animation("./src/assets/menu/life.png", 2)
 life_button.set_position(
     gvar.WIDTH / 2 - life_button.width / 2, 500 - life_button.height / 2
 )
+
 
 def run():
     global title

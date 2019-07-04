@@ -1,3 +1,4 @@
+from math import exp
 from pygame import math
 from copy import deepcopy
 
@@ -14,6 +15,7 @@ player_can_shoot = True
 bullet_cooldown = gvar.BULLET_COOLDOWN
 score = 0
 
+
 def reset():
     global bullet_mtx
     global bullet_vel
@@ -26,6 +28,7 @@ def reset():
     player_can_shoot = True
     bullet_cooldown = gvar.BULLET_COOLDOWN
     score = 0
+
 
 def run():
     global bullet_mtx
@@ -101,3 +104,7 @@ def run():
         for bullet in bullet_mtx:
             bullet.update()
             bullet.render()
+
+
+def get_score(x):
+    pass

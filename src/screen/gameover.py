@@ -11,12 +11,13 @@ title.set_position(gvar.WIDTH / 2 - title.width / 2, gvar.HEIGHT / 2 - title.hei
 title.set_sequence_time(0, 9, 100)
 title.play()
 
+
 def run():
     global title
 
     animation_completed = False
-    
-    if title.get_curr_frame() < title.get_final_frame() - 1:  
+
+    if title.get_curr_frame() < title.get_final_frame() - 1:
         title.update()
     else:
         animation_completed = True
@@ -26,14 +27,17 @@ def run():
 
     if animation_completed:
         aux_name = input("Qual seu nome? \n")
-        
+
         while len(aux_name) > 9 or len(aux_name) < 3:
             print("Por favor, insira um nome entre 3 e 9 caracteres.\n")
             aux_name = input("Qual seu nome? \n")
 
         from controller.bullet import score
         from controller.enemy import wave
-        Database().save_score(aux_name, score, wave)
 
-        gvar.STATE = 0
-        window.delay(150)
+        Database().save_score(aux_name.lower(), score, wave)
+
+        return True
+
+    else:
+        return False

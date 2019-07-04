@@ -1,17 +1,20 @@
 from sqlite3 import connect, Error
 
+
 class Database(object):
     def __init__(self):
         self.con = None
         try:
-            self.con = connect('scores.db')
+            self.con = connect("scores.db")
             c = self.con.cursor()
-            c.execute("CREATE TABLE IF NOT EXISTS scores (name TEXT, score INT, wave INT);")
+            c.execute(
+                "CREATE TABLE IF NOT EXISTS scores (name TEXT, score INT, wave INT);"
+            )
 
             self.con.commit()
         except Error as e:
             print("SQLITE ERRO: {}".format(e))
-        
+
     def save_score(self, name, score, wave):
         try:
             c = self.con.cursor()
@@ -19,7 +22,7 @@ class Database(object):
             self.con.commit()
         except Error as e:
             print("SQLITE ERRO: {}".format(e))
-    
+
     def get_scores(self):
         data = None
 
@@ -31,7 +34,7 @@ class Database(object):
 
         except Error as e:
             print("SQLITE ERRO: {}".format(e))
-        
+
         return data
 
     def __del__(self):

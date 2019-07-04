@@ -38,7 +38,7 @@ def run():
     if mouse.is_over_object(rank_button):
         rank_button.set_curr_frame(1)
         if mouse.is_button_pressed(1):
-            pass
+            gvar.STATE = 4
     else:
         rank_button.set_curr_frame(0)
 
