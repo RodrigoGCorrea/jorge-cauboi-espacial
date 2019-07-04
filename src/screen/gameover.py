@@ -1,5 +1,7 @@
 from library.PPlay.animation import Animation
 
+from classes.database import Database
+
 from environment import variables as gvar
 from environment.instances import keyboard, window, mouse
 
@@ -12,12 +14,26 @@ title.play()
 def run():
     global title
 
-    if keyboard.key_pressed("esc"):
-        gvar.STATE = 0
-        window.delay(150)
+    animation_completed = False
     
     if title.get_curr_frame() < title.get_final_frame() - 1:  
         title.update()
+    else:
+        animation_completed = True
 
     window.set_background_color((0, 0, 0))
     title.draw()
+
+    if animation_completed:
+        aux_name = input("Qual seu nome? \n")
+        
+        while len(aux_name) > 9 or len(aux_name) < 3:
+            print("Por favor, insira um nome entre 3 e 9 caracteres.\n")
+            aux_name = input("Qual seu nome? \n")
+
+        from controller.bullet import score
+        from controller.enemy import wave
+        Database().save_score(aux_name, score, wave)
+
+        gvar.STATE = 0
+        window.delay(150)

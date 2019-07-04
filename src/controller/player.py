@@ -13,7 +13,7 @@ def reset():
     global player
     global vel_vector
 
-    player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
+    player.__init__(window, "./src/assets/actors/jorge/idle_right.png", 8)
     player.set_position(10, window.height / 2)
     vel_vector = math.Vector2(0, 0)
 
