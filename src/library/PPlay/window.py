@@ -180,12 +180,11 @@ class Window:
         # That's because pygame does NOT provide a way
         # to directly draw text on an existing Surface.
         # So you must use Font.render() -> Surface and BLIT
-        font_rect = font_surface.get_rect()
+
+        # font_rect = font_surface.get_rect()
 
         # Finally! BLIT!
-        self.screen.blit(
-            font_surface, [x - font_rect.width / 2, y - font_rect.height / 2]
-        )
+        self.screen.blit(font_surface, [x, y])
 
     # ---------------------CLASS METHODS--------------------------
     """Returns the drawing surface"""

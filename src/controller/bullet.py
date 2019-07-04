@@ -13,7 +13,6 @@ bullet_mtx = []
 bullet_vel = math.Vector2(0)
 player_can_shoot = True
 bullet_cooldown = gvar.BULLET_COOLDOWN
-score = 0
 
 
 def reset():
@@ -21,13 +20,12 @@ def reset():
     global bullet_vel
     global player_can_shoot
     global bullet_cooldown
-    global score
 
     bullet_mtx.clear()
     bullet_vel = math.Vector2(0)
     player_can_shoot = True
     bullet_cooldown = gvar.BULLET_COOLDOWN
-    score = 0
+    gvar.SCORE = 0
 
 
 def run():
@@ -35,7 +33,6 @@ def run():
     global bullet_vel
     global player_can_shoot
     global bullet_cooldown
-    global score
 
     # DEFAULT
     bullet_vel.update(0)
@@ -82,6 +79,7 @@ def run():
 
     # BULLET COLLISION
     from .enemy import wave
+
     for enemy in enemy_mtx:
         for bullet in bullet_mtx:
             if bullet.collide(enemy):
@@ -89,7 +87,7 @@ def run():
                 bullet_mtx.remove(bullet)
                 if enemy.life <= 0:
                     enemy_mtx.remove(enemy)
-                    score += get_score(wave)
+                    gvar.SCORE += get_score(wave)
     # DESTROY BULLET
     for bullet in bullet_mtx:
         if (
@@ -109,6 +107,6 @@ def run():
 
 def get_score(x):
     if x <= 30:
-        return ceil(0.85*exp(0.16*x))
+        return ceil(0.85 * exp(0.16 * x))
     else:
         return 100

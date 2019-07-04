@@ -66,6 +66,7 @@ def run():
                         enemy.strenght = gvar.BOSS_DAMAGE + get_strenght_boss(wave)
                         enemy.life = gvar.BOSS_LIFE + get_life_boss(wave)
                         enemy.velocity = gvar.BOSS_VELOCITY + get_velocity(wave)
+                        enemy.is_boss = True
 
                     enemy.set_position(
                         col * (gvar.WIDTH / 22)
@@ -115,6 +116,7 @@ def run():
     for enemy in enemy_mtx:
         enemy.update()
         enemy.render()
+
 
 def get_velocity(x):
     if x <= 30:

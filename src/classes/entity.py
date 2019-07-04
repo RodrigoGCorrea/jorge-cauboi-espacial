@@ -24,7 +24,10 @@ class Entity(Sprite):
         self.damage_cooldown = gvar.DAMAGE_COOLDOWN
 
         self.life = 100
+        self.max_life = 100
         self.strenght = 50
+
+        self.is_boss = False
 
     def update(self):
         self.animation.x += self.velocity_vector.x * self.window.delta_time()

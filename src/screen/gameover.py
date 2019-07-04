@@ -32,10 +32,9 @@ def run():
             print("Por favor, insira um nome entre 3 e 9 caracteres.\n")
             aux_name = input("Qual seu nome? \n")
 
-        from controller.bullet import score
         from controller.enemy import wave
 
-        Database().save_score(aux_name.lower(), score, wave)
+        Database().save_score(aux_name.lower(), gvar.SCORE, wave)
 
         return True
 
