@@ -99,8 +99,6 @@ def run():
             player.damage_cooldown = gvar.DAMAGE_COOLDOWN
             player.staggered = False
 
-    print(player.damage_cooldown)
-
     # ANIMATION
     if player.staggered:
         if player.state["idle"]:

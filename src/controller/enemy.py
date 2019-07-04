@@ -61,7 +61,6 @@ def run():
 
     # MOVEMENT
     for enemy in enemy_mtx:
-        print(enemy.strenght)
         enemy_direction = math.Vector2(
             player.animation.x - enemy.animation.x,
             player.animation.y - enemy.animation.y,

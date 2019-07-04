@@ -12,9 +12,7 @@ bullet_mtx = []
 bullet_vel = math.Vector2(0)
 player_can_shoot = True
 bullet_cooldown = gvar.BULLET_COOLDOWN
-
 score = 0
-
 
 def reset():
     global bullet_mtx
@@ -28,7 +26,6 @@ def reset():
     player_can_shoot = True
     bullet_cooldown = gvar.BULLET_COOLDOWN
     score = 0
-
 
 def run():
     global bullet_mtx
