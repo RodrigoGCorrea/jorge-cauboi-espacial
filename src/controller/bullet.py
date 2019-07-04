@@ -15,6 +15,7 @@ bullet_cooldown = gvar.BULLET_COOLDOWN
 
 score = 0
 
+
 def reset():
     global bullet_mtx
     global bullet_vel
@@ -27,7 +28,6 @@ def reset():
     player_can_shoot = True
     bullet_cooldown = gvar.BULLET_COOLDOWN
     score = 0
-
 
 
 def run():

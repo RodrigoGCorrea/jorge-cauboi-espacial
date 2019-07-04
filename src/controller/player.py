@@ -8,6 +8,7 @@ player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
 player.set_position(10, window.height / 2)
 vel_vector = math.Vector2(0, 0)
 
+
 def reset():
     global player
     global vel_vector
@@ -15,6 +16,7 @@ def reset():
     player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
     player.set_position(10, window.height / 2)
     vel_vector = math.Vector2(0, 0)
+
 
 def run():
     global vel_vector
@@ -96,26 +98,38 @@ def run():
         if player.damage_cooldown <= 0:
             player.damage_cooldown = gvar.DAMAGE_COOLDOWN
             player.staggered = False
-    
+
     print(player.damage_cooldown)
 
     # ANIMATION
     if player.staggered:
         if player.state["idle"]:
             if player.direction["right"]:
-                player.set_animation("./src/assets/actors/jorge/idle_right_staggered.png", 8)
+                player.set_animation(
+                    "./src/assets/actors/jorge/idle_right_staggered.png", 8
+                )
             elif player.direction["left"]:
-                player.set_animation("./src/assets/actors/jorge/idle_left_staggered.png", 8)
+                player.set_animation(
+                    "./src/assets/actors/jorge/idle_left_staggered.png", 8
+                )
         elif player.state["running"]:
             if player.direction["right"]:
-                player.set_animation("./src/assets/actors/jorge/running_right_staggered.png", 8)
+                player.set_animation(
+                    "./src/assets/actors/jorge/running_right_staggered.png", 8
+                )
             elif player.direction["left"]:
-                player.set_animation("./src/assets/actors/jorge/running_left_staggered.png", 8)
+                player.set_animation(
+                    "./src/assets/actors/jorge/running_left_staggered.png", 8
+                )
         else:
             if player.direction["right"]:
-                player.set_animation("./src/assets/actors/jorge/idle_right_staggered.png", 8)
+                player.set_animation(
+                    "./src/assets/actors/jorge/idle_right_staggered.png", 8
+                )
             elif player.direction["left"]:
-                player.set_animation("./src/assets/actors/jorge/idle_left_staggered.png", 8)
+                player.set_animation(
+                    "./src/assets/actors/jorge/idle_left_staggered.png", 8
+                )
 
     else:
         if player.state["idle"]:

@@ -12,15 +12,16 @@ enemy_type = 0
 
 wave = 0
 
+
 def reset():
     global enemy_mtx
     global wave
     global enemy_type
-    global score
 
     enemy_mtx = []
     wave = 0
     enemy_type = 0
+
 
 def run():
     global enemy_mtx
@@ -68,7 +69,6 @@ def run():
         enemy_direction.normalize_ip()
         enemy_direction *= gvar.ENEMY_VELOCITY + wave
         enemy.move(enemy_direction)
-
 
     # COLISSION
     for enemy1 in range(len(enemy_mtx)):

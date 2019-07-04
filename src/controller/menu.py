@@ -4,6 +4,11 @@ from environment import variables as gvar
 from environment.instances import window, mouse
 
 
+title = Animation("./src/assets/menu/title.png", 10)
+title.set_position(gvar.WIDTH / 2 - title.width / 2, 200 - title.height / 2)
+title.set_sequence_time(0, 10, 100)
+title.play()
+
 play_button = Animation("./src/assets/menu/play.png", 2)
 play_button.set_position(
     gvar.WIDTH / 2 - play_button.width / 2, gvar.HEIGHT / 2 - play_button.height / 2
@@ -22,13 +27,7 @@ def run():
 
     window.set_background_color((0, 0, 0))
 
-    window.draw_text(
-        "Jorge The Space Cowboy",
-        gvar.WIDTH / 2,
-        gvar.HEIGHT / 2 - 220,
-        "./src/assets/fonts/pixel.ttf",
-        50,
-        (255, 255, 255),
-    )
+    title.update()
 
+    title.draw()
     play_button.draw()
