@@ -13,7 +13,8 @@ class Entity(Sprite):
         self.animation.set_sequence_time(0, frames, gvar.FRAME_SPEED)
         self.animation.play()
 
-        self.velocity = math.Vector2(0, 0)
+        self.velocity_vector = math.Vector2(0, 0)
+        self.velocity = 0
 
         self.direction = {"left": False, "right": True}
         self.state = {"idle": True, "running": False}
@@ -26,15 +27,15 @@ class Entity(Sprite):
         self.strenght = 50
 
     def update(self):
-        self.animation.x += self.velocity.x * self.window.delta_time()
-        self.animation.y += self.velocity.y * self.window.delta_time()
+        self.animation.x += self.velocity_vector.x * self.window.delta_time()
+        self.animation.y += self.velocity_vector.y * self.window.delta_time()
 
     def render(self):
         self.animation.update()
         self.animation.draw()
 
     def move(self, vector):
-        self.velocity = vector
+        self.velocity_vector = vector
 
     def distance_to(self, object):
         return (
@@ -83,7 +84,7 @@ class Entity(Sprite):
             self.animation.x + self.animation.width / 2,
             self.animation.y + self.animation.height / 2,
         )
-        bullet.velocity = bullet_vel
+        bullet.velocity_vector = bullet_vel
         angle = bullet_vel.angle_to(math.Vector2(1, 0))
         bullet.animation.image = rotate(bullet.animation.image, angle)
         return bullet
