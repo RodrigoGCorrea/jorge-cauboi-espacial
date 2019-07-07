@@ -8,6 +8,7 @@ class Store(object):
                 "state": 0,
                 "score": 0,
                 "enemy_mtx": [],
+                "wave": 1,
                 "player": None,
                 "owned_strength": 0,
                 "owned_life": 0,
@@ -16,7 +17,7 @@ class Store(object):
 
     def dispatch(self, name, value=0, callback=None):
         if callback != None and callable(callback):
-            callback(self.store[name])
+            self.store[name] = callback(self.store[name])
         else:
             self.store[name] = value
 
