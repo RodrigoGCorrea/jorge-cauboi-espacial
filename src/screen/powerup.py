@@ -11,7 +11,7 @@ from controller.atributes import (
     cost_life,
     heal_player,
     update_life,
-    update_strenght
+    update_strength
 )
 
 
@@ -43,7 +43,7 @@ def run():
         power.set_curr_frame(1)
         if mouse.is_button_pressed(1) and gvar.SCORE > cost_strength():
             gvar.SCORE -= cost_strength()
-            player.strenght = update_strenght()
+            player.strenght = update_strength()
             window.delay(150)
     else:
         power.set_curr_frame(0)
@@ -90,9 +90,9 @@ def run():
         color=(255, 255, 255),
     )
 
-    from controller.atributes import owned_strenght
+    from controller.atributes import owned_strength
     window.draw_text(
-        "owned: {}".format(owned_strenght),
+        "owned: {}".format(owned_strength),
         power.x + power.width + 25,
         power.y + 50,
         "./src/assets/fonts/pixel.ttf",
