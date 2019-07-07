@@ -30,5 +30,5 @@ if __name__ == "__main__":
 
         window.update()
         window.clock.tick(60)
-        print(store.store)
+        # print(store.store)
         # print(window.clock.get_fps())
