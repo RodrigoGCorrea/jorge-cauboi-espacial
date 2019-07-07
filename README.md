@@ -1,2 +1,2 @@
-# jorge_cauboi_espacial
+# Jorge the Space Cowboy
 A simple game made with PyGame
