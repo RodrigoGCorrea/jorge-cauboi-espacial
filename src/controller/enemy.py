@@ -4,12 +4,13 @@ from math import exp
 
 from classes.entity import Entity
 
-from environment import config 
+from environment import config
 from environment.instances import window, store
 
 wave = 0
 store.dispatch("enemy_mtx", value=[])
 store.dispatch("wave", value=0)
+
 
 def reset():
     global enemy_type
@@ -122,7 +123,7 @@ def run():
     for enemy in store.get("enemy_mtx"):
         enemy.update()
         enemy.render()
-    
+
     store.dispatch("wave", value=wave)
 
 

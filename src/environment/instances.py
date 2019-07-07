@@ -4,7 +4,7 @@ from library.PPlay.mouse import Mouse
 
 from classes.store import Store
 
-from . import config 
+from . import config
 
 window = Window(config.WIDTH, config.HEIGHT)
 window.set_title("JSC 1.0.0")

@@ -1,7 +1,7 @@
 from library.PPlay.animation import Animation
 from library.PPlay.sprite import Sprite
 
-from environment import config 
+from environment import config
 from environment.instances import window, mouse, keyboard, store
 
 from controller.atributes import (

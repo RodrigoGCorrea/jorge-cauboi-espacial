@@ -2,11 +2,13 @@ from library.PPlay.animation import Animation
 
 from classes.database import Database
 
-from environment import config 
+from environment import config
 from environment.instances import keyboard, window, mouse, store
 
 title = Animation("./src/assets/menu/gameover_title.png", 9)
-title.set_position(config.WIDTH / 2 - title.width / 2, config.HEIGHT / 2 - title.height / 2)
+title.set_position(
+    config.WIDTH / 2 - title.width / 2, config.HEIGHT / 2 - title.height / 2
+)
 title.set_sequence_time(0, 9, 100)
 title.play()
 

@@ -1,4 +1,4 @@
-from environment import config 
+from environment import config
 from environment.instances import window, keyboard, store
 
 from screen import menu, play, powerup, gameover, rank

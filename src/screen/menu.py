@@ -1,6 +1,6 @@
 from library.PPlay.animation import Animation
 
-from environment import config 
+from environment import config
 from environment.instances import keyboard, window, mouse, store
 
 

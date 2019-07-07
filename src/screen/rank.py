@@ -2,7 +2,7 @@ from library.PPlay.sprite import Sprite
 
 from classes.database import Database
 
-from environment import config 
+from environment import config
 from environment.instances import window, keyboard, store
 
 title = Sprite("./src/assets/menu/rank_title.png")

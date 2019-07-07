@@ -2,7 +2,7 @@ from pygame import math
 
 from classes.entity import Entity
 
-from environment import config 
+from environment import config
 from environment.instances import window, keyboard, store
 
 player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)

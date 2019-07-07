@@ -1,5 +1,6 @@
-from environment import config 
+from environment import config
 from environment.instances import window, store
+
 
 def run():
     # PRINT WAVE

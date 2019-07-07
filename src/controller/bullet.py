@@ -2,7 +2,7 @@ from math import exp, ceil
 from pygame import math
 from copy import deepcopy
 
-from environment import config 
+from environment import config
 from environment.instances import window, keyboard, store
 
 from classes.entity import Entity

@@ -1,4 +1,4 @@
-from environment import config 
+from environment import config
 from library.PPlay.gameimage import load_image
 from library.PPlay.animation import Animation
 from pygame import math

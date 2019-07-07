@@ -1,6 +1,6 @@
 from library.PPlay.sprite import Sprite
 
-from environment import config 
+from environment import config
 from environment.instances import keyboard, window, store
 
 from controller import player, enemy, bullet, atributes
