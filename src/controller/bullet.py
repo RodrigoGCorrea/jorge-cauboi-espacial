@@ -3,7 +3,7 @@ from pygame import math
 from copy import deepcopy
 
 from environment import variables as gvar
-from environment.instances import window, keyboard
+from environment.instances import window, keyboard, store
 
 from classes.entity import Entity
 from .player import player
@@ -25,8 +25,8 @@ def reset():
     bullet_vel = math.Vector2(0)
     player_can_shoot = True
     bullet_cooldown = gvar.BULLET_COOLDOWN
-    gvar.SCORE = 0
 
+    store.dispatch("score", value=0)
 
 def run():
     global bullet_mtx
@@ -71,26 +71,25 @@ def run():
     if bullet_vel != math.Vector2(0):
         bullet_vel.normalize_ip()
         bullet_vel *= gvar.BULLET_VELOCITY
-        bullet = player.shoot(
+        bullet = store.get("player").shoot(
             "./src/assets/actors/bullet/bullet.png", 1, deepcopy(bullet_vel)
         )
         bullet_mtx.append(bullet)
         player_can_shoot = False
 
     # BULLET COLLISION
-    from .enemy import wave
-
-    for enemy in enemy_mtx:
+    for enemy in store.get("enemy_mtx"):
         for bullet in bullet_mtx:
             if bullet.collide(enemy):
-                enemy.life -= player.strenght
+                enemy.life -= store.get("player").strenght
                 bullet_mtx.remove(bullet)
                 if enemy.life <= 0:
-                    enemy_mtx.remove(enemy)
+                    store.get("enemy_mtx").remove(enemy)
                     if enemy.is_boss:
-                        gvar.SCORE += 200
+                        store.dispatch("score", lambda score: score + 200)
                     else:
-                        gvar.SCORE += get_score(wave)
+                        aux_score = get_score(store.get("wave"))
+                        store.dispatch("score", lambda score: score + aux_score)
     # DESTROY BULLET
     for bullet in bullet_mtx:
         if (
