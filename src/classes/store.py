@@ -15,7 +15,7 @@ class Store(object):
                 "owned_heal": 0
             }
 
-    def dispatch(self, name, value=0, callback=None):
+    def dispatch(self, name, callback=None, value=0):
         if callback != None and callable(callback):
             self.store[name] = callback(self.store[name])
         else:
