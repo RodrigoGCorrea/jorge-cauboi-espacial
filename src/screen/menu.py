@@ -21,10 +21,6 @@ rank_button.set_position(
 
 
 def run():
-    global title
-    global play_button
-    global rank_button
-
     if keyboard.key_pressed("esc"):
         gvar.GAME_STARTED = False
 

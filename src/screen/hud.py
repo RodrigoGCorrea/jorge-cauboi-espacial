@@ -1,15 +1,10 @@
 from environment import variables as gvar
-from environment.instances import window
-
-from controller.player import player
-
+from environment.instances import window, store
 
 def run():
     # PRINT WAVE
-    from controller.enemy import wave
-
     window.draw_text(
-        "wave: {}".format(wave),
+        "wave: {}".format(store.get("wave")),
         940,
         770,
         "./src/assets/fonts/pixel.ttf",
@@ -18,7 +13,7 @@ def run():
     )
 
     window.draw_text(
-        "score: {}".format(gvar.SCORE),
+        "score: {}".format(store.get("score")),
         710,
         770,
         "./src/assets/fonts/pixel.ttf",
@@ -28,7 +23,7 @@ def run():
 
     # PRINT LIFE
     window.draw_text(
-        "life: {}".format(player.life),
+        "life: {}".format(store.get("player").life),
         55,
         770,
         "./src/assets/fonts/pixel.ttf",
