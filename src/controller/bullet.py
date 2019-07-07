@@ -6,8 +6,6 @@ from environment import variables as gvar
 from environment.instances import window, keyboard, store
 
 from classes.entity import Entity
-from .player import player
-from .enemy import enemy_mtx
 
 bullet_mtx = []
 bullet_vel = math.Vector2(0)
@@ -27,6 +25,7 @@ def reset():
     bullet_cooldown = gvar.BULLET_COOLDOWN
 
     store.dispatch("score", value=0)
+
 
 def run():
     global bullet_mtx

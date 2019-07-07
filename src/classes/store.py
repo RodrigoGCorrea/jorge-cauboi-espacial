@@ -12,7 +12,7 @@ class Store(object):
                 "player": None,
                 "owned_strength": 0,
                 "owned_life": 0,
-                "owned_heal": 0
+                "owned_heal": 0,
             }
 
     def dispatch(self, name, callback=None, value=0):

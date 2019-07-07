@@ -1,10 +1,12 @@
 from math import exp
 from environment.instances import store
 
+
 def reset():
     store.dispatch("owned_strength", value=0)
     store.dispatch("owned_life", value=0)
     store.dispatch("owned_heal", value=0)
+
 
 # STRENGHT
 def cost_strength():
@@ -31,6 +33,5 @@ def cost_heal():
     return int(100 * (1.5) ** store.get("owned_heal"))
 
 
-def heal_player(player):
+def update_heal():
     store.dispatch("owned_heal", lambda heal: heal + 1)
-    player.life = player.max_life

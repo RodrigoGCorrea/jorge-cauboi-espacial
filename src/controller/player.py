@@ -12,6 +12,7 @@ vel_vector = math.Vector2(0, 0)
 
 store.dispatch("player", value=player)
 
+
 def reset():
     global vel_vector
 
@@ -20,6 +21,7 @@ def reset():
     vel_vector = math.Vector2(0, 0)
 
     store.dispatch("player", value=player)
+
 
 def run():
     global vel_vector
@@ -87,9 +89,7 @@ def run():
         player.set_state("running")
 
     # COLLISION WITH ENEMY
-    from .enemy import enemy_mtx
-
-    for enemy in enemy_mtx:
+    for enemy in store.get("enemy_mtx"):
         if player.collide(enemy) and player.staggered == False:
             player.damage(enemy.strenght)
             player.staggered = True
