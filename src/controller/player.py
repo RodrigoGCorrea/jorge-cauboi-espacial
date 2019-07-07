@@ -1,26 +1,30 @@
 from pygame import math
 
-from environment import variables as gvar
-from environment.instances import window, keyboard
 from classes.entity import Entity
+
+from environment import config
+from environment.instances import window, keyboard, store
 
 player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
 player.set_position(10, window.height / 2)
+
 vel_vector = math.Vector2(0, 0)
+
+store.dispatch("player", value=player)
 
 
 def reset():
-    global player
     global vel_vector
 
     player.__init__(window, "./src/assets/actors/jorge/idle_right.png", 8)
     player.set_position(10, window.height / 2)
     vel_vector = math.Vector2(0, 0)
 
+    store.dispatch("player", value=player)
+
 
 def run():
     global vel_vector
-    global player
 
     # DEFAULT
     player.set_state("idle")
@@ -85,9 +89,7 @@ def run():
         player.set_state("running")
 
     # COLLISION WITH ENEMY
-    from .enemy import enemy_mtx
-
-    for enemy in enemy_mtx:
+    for enemy in store.get("enemy_mtx"):
         if player.collide(enemy) and player.staggered == False:
             player.damage(enemy.strenght)
             player.staggered = True
@@ -96,7 +98,7 @@ def run():
     if player.staggered:
         player.damage_cooldown -= window.delta_time() * 1000
         if player.damage_cooldown <= 0:
-            player.damage_cooldown = gvar.DAMAGE_COOLDOWN
+            player.damage_cooldown = config.DAMAGE_COOLDOWN
             player.staggered = False
 
     # ANIMATION
@@ -148,8 +150,10 @@ def run():
 
     if vel_vector != math.Vector2(0):
         vel_vector.normalize_ip()
-    vel_vector *= gvar.VELOCITY_PLAYER
+    vel_vector *= config.VELOCITY_PLAYER
 
     player.move(vel_vector)
     player.update()
     player.render()
+
+    store.dispatch("player", value=player)

@@ -1,16 +1,15 @@
-from environment import variables as gvar
+from environment import config
 from library.PPlay.gameimage import load_image
 from library.PPlay.animation import Animation
-from pygame.sprite import Sprite
 from pygame import math
 from pygame.transform import rotate
 
 
-class Entity(Sprite):
+class Entity(object):
     def __init__(self, window, sprite_path, frames):
         self.window = window
         self.animation = Animation(sprite_path, frames)
-        self.animation.set_sequence_time(0, frames, gvar.FRAME_SPEED)
+        self.animation.set_sequence_time(0, frames, config.FRAME_SPEED)
         self.animation.play()
 
         self.velocity_vector = math.Vector2(0, 0)
@@ -21,7 +20,7 @@ class Entity(Sprite):
         self.colliding = {"left": False, "right": False, "up": False, "down": False}
         self.staggered = False
 
-        self.damage_cooldown = gvar.DAMAGE_COOLDOWN
+        self.damage_cooldown = config.DAMAGE_COOLDOWN
 
         self.life = 100
         self.max_life = 100
@@ -59,7 +58,7 @@ class Entity(Sprite):
     def set_animation(self, sprite_path, frames):
         self.animation.image, self.animation.rect = load_image(sprite_path, alpha=True)
         self.animation.total_frames = frames
-        self.animation.set_total_duration(frames * gvar.FRAME_SPEED)
+        self.animation.set_total_duration(frames * config.FRAME_SPEED)
 
     def set_position(self, x, y):
         self.animation.set_position(x, y)

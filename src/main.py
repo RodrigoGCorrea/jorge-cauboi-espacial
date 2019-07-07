@@ -1,33 +1,34 @@
-from environment import variables as gvar
-from environment.instances import window, keyboard
+from environment import config
+from environment.instances import window, keyboard, store
 
 from screen import menu, play, powerup, gameover, rank
 
 if __name__ == "__main__":
-    while gvar.GAME_STARTED:
+    while store.get("game_started"):
         # MENU SCREEN
-        if gvar.STATE == 0:
+        if store.get("state") == 0:
             menu.run()
 
         # PLAY SCREEN
-        elif gvar.STATE == 1:
+        elif store.get("state") == 1:
             play.run()
 
         # POWER UP SCREEN
-        elif gvar.STATE == 2:
+        elif store.get("state") == 2:
             powerup.run()
 
         # GAME OVER SCREEN
-        elif gvar.STATE == 3:
+        elif store.get("state") == 3:
             if gameover.run():
                 play.reset()
-                gvar.STATE = 0
+                store.dispatch("state", value=0)
                 window.delay(150)
 
         # RANK SCREEN
-        elif gvar.STATE == 4:
+        elif store.get("state") == 4:
             rank.run()
 
         window.update()
         window.clock.tick(60)
+        print(store.store)
         # print(window.clock.get_fps())

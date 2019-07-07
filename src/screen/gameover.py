@@ -2,11 +2,13 @@ from library.PPlay.animation import Animation
 
 from classes.database import Database
 
-from environment import variables as gvar
-from environment.instances import keyboard, window, mouse
+from environment import config
+from environment.instances import keyboard, window, mouse, store
 
 title = Animation("./src/assets/menu/gameover_title.png", 9)
-title.set_position(gvar.WIDTH / 2 - title.width / 2, gvar.HEIGHT / 2 - title.height / 2)
+title.set_position(
+    config.WIDTH / 2 - title.width / 2, config.HEIGHT / 2 - title.height / 2
+)
 title.set_sequence_time(0, 9, 100)
 title.play()
 
@@ -32,9 +34,7 @@ def run():
             print("Por favor, insira um nome entre 3 e 9 caracteres.\n")
             aux_name = input("Qual seu nome? \n")
 
-        from controller.enemy import wave
-
-        Database().save_score(aux_name.lower(), gvar.SCORE, wave)
+        Database().save_score(aux_name.lower(), store.get("score"), store.get("wave"))
 
         return True
 
