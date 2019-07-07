@@ -1,4 +1,4 @@
-from environment import variables as gvar
+from environment import config 
 from environment.instances import window, store
 
 def run():

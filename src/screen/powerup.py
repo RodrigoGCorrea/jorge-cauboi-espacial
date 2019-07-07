@@ -1,7 +1,7 @@
 from library.PPlay.animation import Animation
 from library.PPlay.sprite import Sprite
 
-from environment import variables as gvar
+from environment import config 
 from environment.instances import window, mouse, keyboard, store
 
 from controller.atributes import (
@@ -15,21 +15,21 @@ from controller.atributes import (
 
 
 title = Sprite("./src/assets/menu/powerup_title.png")
-title.set_position(gvar.WIDTH / 2 - title.width / 2, 150 - title.height / 2)
+title.set_position(config.WIDTH / 2 - title.width / 2, 150 - title.height / 2)
 
 power = Animation("./src/assets/menu/power.png", 2)
-power.set_position(gvar.WIDTH / 2 - power.width / 2, 350 - power.height / 2)
+power.set_position(config.WIDTH / 2 - power.width / 2, 350 - power.height / 2)
 
 life = Animation("./src/assets/menu/life.png", 2)
-life.set_position(gvar.WIDTH / 2 - life.width / 2, 500 - life.height / 2)
+life.set_position(config.WIDTH / 2 - life.width / 2, 500 - life.height / 2)
 
 heal = Animation("./src/assets/menu/heal.png", 2)
-heal.set_position(gvar.WIDTH / 2 - heal.width / 2, 700 - heal.height / 2)
+heal.set_position(config.WIDTH / 2 - heal.width / 2, 700 - heal.height / 2)
 
 
 def run():
     if keyboard.key_pressed("esc"):
-        gvar.STATE = 1
+        store.dispatch("state", value=1)
         window.delay(150)
 
     # POWER

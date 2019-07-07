@@ -2,7 +2,7 @@ from pygame import math
 
 from classes.entity import Entity
 
-from environment import variables as gvar
+from environment import config 
 from environment.instances import window, keyboard, store
 
 player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
@@ -98,7 +98,7 @@ def run():
     if player.staggered:
         player.damage_cooldown -= window.delta_time() * 1000
         if player.damage_cooldown <= 0:
-            player.damage_cooldown = gvar.DAMAGE_COOLDOWN
+            player.damage_cooldown = config.DAMAGE_COOLDOWN
             player.staggered = False
 
     # ANIMATION
@@ -150,7 +150,7 @@ def run():
 
     if vel_vector != math.Vector2(0):
         vel_vector.normalize_ip()
-    vel_vector *= gvar.VELOCITY_PLAYER
+    vel_vector *= config.VELOCITY_PLAYER
 
     player.move(vel_vector)
     player.update()

@@ -4,7 +4,7 @@ from math import exp
 
 from classes.entity import Entity
 
-from environment import variables as gvar
+from environment import config 
 from environment.instances import window, store
 
 wave = 0
@@ -13,9 +13,11 @@ store.dispatch("wave", value=0)
 
 def reset():
     global enemy_type
+    global wave
 
     store.dispatch("enemy_mtx", value=[])
     store.dispatch("wave", value=0)
+    wave = 0
     enemy_type = 0
 
 
@@ -43,9 +45,9 @@ def run():
                             ),
                             8,
                         )
-                        enemy.strenght = gvar.ENEMY_DAMAGE + get_strenght_minion(wave)
-                        enemy.velocity = gvar.ENEMY_VELOCITY + get_velocity(wave)
-                        enemy.life = gvar.ENEMY_LIFE + get_life_minion(wave)
+                        enemy.strenght = config.ENEMY_DAMAGE + get_strenght_minion(wave)
+                        enemy.velocity = config.ENEMY_VELOCITY + get_velocity(wave)
+                        enemy.life = config.ENEMY_LIFE + get_life_minion(wave)
 
                     elif line[col] == "2" and wave % 3 == 0:
                         enemy = Entity(
@@ -55,17 +57,17 @@ def run():
                             ),
                             8,
                         )
-                        enemy.strenght = gvar.BOSS_DAMAGE + get_strenght_boss(wave)
-                        enemy.life = gvar.BOSS_LIFE + get_life_boss(wave)
-                        enemy.velocity = gvar.BOSS_VELOCITY + get_velocity(wave)
+                        enemy.strenght = config.BOSS_DAMAGE + get_strenght_boss(wave)
+                        enemy.life = config.BOSS_LIFE + get_life_boss(wave)
+                        enemy.velocity = config.BOSS_VELOCITY + get_velocity(wave)
                         enemy.is_boss = True
 
                     enemy.set_position(
-                        col * (gvar.WIDTH / 22)
-                        + (gvar.WIDTH / 22) / 2
+                        col * (config.WIDTH / 22)
+                        + (config.WIDTH / 22) / 2
                         - enemy.animation.width / 2,
-                        lin * (gvar.HEIGHT / 17)
-                        + (gvar.HEIGHT / 17) / 2
+                        lin * (config.HEIGHT / 17)
+                        + (config.HEIGHT / 17) / 2
                         - enemy.animation.height,
                     )
                     enemy_mtx.append(enemy)

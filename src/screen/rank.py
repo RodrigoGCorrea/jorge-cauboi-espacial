@@ -2,16 +2,16 @@ from library.PPlay.sprite import Sprite
 
 from classes.database import Database
 
-from environment import variables as gvar
-from environment.instances import window, keyboard
+from environment import config 
+from environment.instances import window, keyboard, store
 
 title = Sprite("./src/assets/menu/rank_title.png")
-title.set_position(gvar.WIDTH / 2 - title.width / 2, 200 - title.height / 2)
+title.set_position(config.WIDTH / 2 - title.width / 2, 200 - title.height / 2)
 
 
 def run():
     if keyboard.key_pressed("esc"):
-        gvar.STATE = 0
+        store.dispatch("state", value=0)
         window.delay(150)
 
     window.set_background_color((0, 0, 0))
