@@ -1,26 +1,28 @@
 from pygame import math
 
-from environment import variables as gvar
-from environment.instances import window, keyboard
 from classes.entity import Entity
+
+from environment import variables as gvar
+from environment.instances import window, keyboard, store
 
 player = Entity(window, "./src/assets/actors/jorge/idle_right.png", 8)
 player.set_position(10, window.height / 2)
+
 vel_vector = math.Vector2(0, 0)
 
+store.dispatch("player", value=player)
 
 def reset():
-    global player
     global vel_vector
 
     player.__init__(window, "./src/assets/actors/jorge/idle_right.png", 8)
     player.set_position(10, window.height / 2)
     vel_vector = math.Vector2(0, 0)
 
+    store.dispatch("player", value=player)
 
 def run():
     global vel_vector
-    global player
 
     # DEFAULT
     player.set_state("idle")
@@ -153,3 +155,5 @@ def run():
     player.move(vel_vector)
     player.update()
     player.render()
+
+    store.dispatch("player", value=player)
