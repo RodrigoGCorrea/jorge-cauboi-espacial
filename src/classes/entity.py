@@ -1,12 +1,11 @@
 from environment import variables as gvar
 from library.PPlay.gameimage import load_image
 from library.PPlay.animation import Animation
-from pygame.sprite import Sprite
 from pygame import math
 from pygame.transform import rotate
 
 
-class Entity(Sprite):
+class Entity(object):
     def __init__(self, window, sprite_path, frames):
         self.window = window
         self.animation = Animation(sprite_path, frames)
