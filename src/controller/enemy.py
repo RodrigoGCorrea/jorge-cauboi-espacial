@@ -7,12 +7,9 @@ from classes.entity import Entity
 from environment import variables as gvar
 from environment.instances import window, store
 
-enemy_mtx = []
 wave = 0
 store.dispatch("enemy_mtx", value=[])
 store.dispatch("wave", value=0)
-
-enemy_type = 0
 
 def reset():
     global enemy_type
@@ -23,13 +20,12 @@ def reset():
 
 
 def run():
-    global enemy_mtx
     global wave
-    global enemy_type
 
     # SPAWN
-    if len(enemy_mtx) == 0:
+    if len(store.get("enemy_mtx")) == 0:
         wave += 1
+        enemy_mtx = []
         level = randint(1, 3)
         enemy_type = randint(1, 5)
         boss_type = randint(1, 2)
@@ -77,8 +73,10 @@ def run():
             line = level_constructor.readline()
             lin += 1
 
+        store.dispatch("enemy_mtx", value=enemy_mtx)
+
     # MOVEMENT
-    for enemy in enemy_mtx:
+    for enemy in store.get("enemy_mtx"):
         enemy_direction = math.Vector2(
             store.get("player").animation.x - enemy.animation.x,
             store.get("player").animation.y - enemy.animation.y,
@@ -88,32 +86,41 @@ def run():
         enemy.move(enemy_direction)
 
     # COLISSION
-    for enemy1 in range(len(enemy_mtx)):
-        for enemy2 in range(enemy1 + 1, len(enemy_mtx)):
-            if enemy_mtx[enemy1].animation.collided(enemy_mtx[enemy2].animation):
-                if enemy_mtx[enemy1].distance_to(store.get("player")) < enemy_mtx[
-                    enemy2
-                ].distance_to(store.get("player")):
-                    new_vel_length = enemy_mtx[enemy2].velocity_vector.length() - 30
+    for enemy1 in range(len(store.get("enemy_mtx"))):
+        for enemy2 in range(enemy1 + 1, len(store.get("enemy_mtx"))):
+            if store.get("enemy_mtx")[enemy1].animation.collided(
+                store.get("enemy_mtx")[enemy2].animation
+            ):
+                if store.get("enemy_mtx")[enemy1].distance_to(
+                    store.get("player")
+                ) < store.get("enemy_mtx")[enemy2].distance_to(store.get("player")):
+                    new_vel_length = (
+                        store.get("enemy_mtx")[enemy2].velocity_vector.length() - 30
+                    )
                     if new_vel_length == 0:
                         new_vel_length = 1
-                    enemy_mtx[enemy2].velocity_vector.normalize_ip()
-                    enemy_mtx[enemy2].velocity_vector *= new_vel_length
-                    enemy_mtx[enemy2].move(enemy_mtx[enemy2].velocity_vector)
+                    store.get("enemy_mtx")[enemy2].velocity_vector.normalize_ip()
+                    store.get("enemy_mtx")[enemy2].velocity_vector *= new_vel_length
+                    store.get("enemy_mtx")[enemy2].move(
+                        store.get("enemy_mtx")[enemy2].velocity_vector
+                    )
                 else:
-                    new_vel_length = enemy_mtx[enemy1].velocity_vector.length() - 30
+                    new_vel_length = (
+                        store.get("enemy_mtx")[enemy1].velocity_vector.length() - 30
+                    )
                     if new_vel_length == 0:
                         new_vel_length = 1
-                    enemy_mtx[enemy1].velocity_vector.normalize_ip()
-                    enemy_mtx[enemy1].velocity_vector *= new_vel_length
-                    enemy_mtx[enemy1].move(enemy_mtx[enemy1].velocity_vector)
+                    store.get("enemy_mtx")[enemy1].velocity_vector.normalize_ip()
+                    store.get("enemy_mtx")[enemy1].velocity_vector *= new_vel_length
+                    store.get("enemy_mtx")[enemy1].move(
+                        store.get("enemy_mtx")[enemy1].velocity_vector
+                    )
 
     # DRAW
-    for enemy in enemy_mtx:
+    for enemy in store.get("enemy_mtx"):
         enemy.update()
         enemy.render()
     
-    store.dispatch("enemy_mtx", value=enemy_mtx)
     store.dispatch("wave", value=wave)
 
 
