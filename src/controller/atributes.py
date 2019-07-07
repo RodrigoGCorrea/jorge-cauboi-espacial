@@ -1,20 +1,10 @@
 from math import exp
 from environment.instances import store
 
-owned_strength = 0
-owned_life = 0
-owned_heal = 0
-
-
 def reset():
-    global owned_strength
-    global owned_life
-    global owned_heal
-
-    owned_strength = 0
-    owned_life = 0
-    owned_heal = 0
-
+    store.dispatch("owned_strength", value=0)
+    store.dispatch("owned_life", value=0)
+    store.dispatch("owned_heal", value=0)
 
 # STRENGHT
 def cost_strength():
